@@ -32,6 +32,9 @@ model Customers {
     last_name String
     address   String
 
+    city    String?
+    provice String?
+
     contact_1 String
     contact_2 String?
 
