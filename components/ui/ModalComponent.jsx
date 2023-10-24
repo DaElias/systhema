@@ -6,21 +6,26 @@ export default function ModalComponent(
         isDismissable = false,
         handleAction = (e) => { },
         titleAction,
-        isOpen = false, onClose = () => { }
+        isOpen = false, onClose = () => { },
+        size = "5xl",
+        backdrop = "opaque",
+        placement = "center",
+        scrollBehavior = "outside",
+        className = ""
     }
 ) {
     return (
         <>
             <Modal
-                size="5xl"
-                backdrop={"opaque"}
+                size={size}
+                backdrop={backdrop}
                 isOpen={isOpen}
                 onClose={onClose}
                 isDismissable={isDismissable}
-                placement={"center"}
-                scrollBehavior="outside"
+                placement={placement}
+                scrollBehavior={scrollBehavior}
             >
-                <ModalContent>
+                <ModalContent className={`${className}`}>
                     {(onClose) => (
                         <>
                             <ModalHeader className="flex flex-col gap-1">{title}</ModalHeader>

@@ -54,6 +54,7 @@ model Element {
     name        String
     description String
 
+    state     State
     updatedAt DateTime @updatedAt
     createdAt DateTime @default(now())
 
@@ -65,6 +66,13 @@ model Element {
 
     @@index([customer_id])
     @@index([category_id])
+}
+
+enum State {
+    READY
+    IN_PROCESS
+    WAITING
+    HAS_NO_REPAIR
 }
 
 model Category {

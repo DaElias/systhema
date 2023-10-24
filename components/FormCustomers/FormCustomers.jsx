@@ -2,7 +2,9 @@
 import { useState } from 'react';
 import useForm from '@/hooks/useForm';
 import { Button, Divider, Input, Select, SelectItem, Textarea } from '@nextui-org/react';
-import { MailIcon } from './svg/MailIcon';
+import { MailIcon } from '../ui/svg/MailIcon';
+import { HAS_PROVINCE } from '@/lib/utils';
+import ListElements from '../ListCustomers/ListElements/ListElements';
 
 
 export default function FormCustomers(props) {
@@ -35,6 +37,8 @@ export default function FormCustomers(props) {
             className='flex flex-col gap-4 w-full pb-2'
             onSubmit={handleSubmit}
         >
+            <h3 className='text-md font-extrabold'>Costumer Information</h3>
+            {/* Form Customers */}
             <div className=''>
                 <Divider className='mb-4' />
                 <div className='flex flex-col'>
@@ -45,7 +49,7 @@ export default function FormCustomers(props) {
                         value={dateCustomers.fiscale_code}
                         name='fiscale_code'
                         onChange={handleChange}
-                        disabled={props.type == "view"}
+                        isDisabled={props.type == "view"}
                     />
                 </div>
                 <div className='flex gap-2 flex-row py-2'>
@@ -58,7 +62,7 @@ export default function FormCustomers(props) {
                         value={dateCustomers.name}
                         name='name'
                         onChange={handleChange}
-                        disabled={props.type == "view"}
+                        isDisabled={props.type == "view"}
 
                     />
                     <Input
@@ -68,7 +72,7 @@ export default function FormCustomers(props) {
                         value={dateCustomers.last_name}
                         name='last_name'
                         onChange={handleChange}
-                        disabled={props.type == "view"}
+                        isDisabled={props.type == "view"}
 
                     />
                 </div>
@@ -80,7 +84,7 @@ export default function FormCustomers(props) {
                     className=" w-full"
                     value={dateCustomers.address}
                     onChange={handleChange}
-                    disabled={props.type == "view"}
+                    isDisabled={props.type == "view"}
 
                 />
             </div>
@@ -91,32 +95,32 @@ export default function FormCustomers(props) {
                     value={dateCustomers.zip_code}
                     name='zip_code'
                     onChange={handleChange}
-                    disabled={props.type == "view"}
+                    isDisabled={props.type == "view"}
 
                 />
-                <Select
-                    label="Select an Cittá"
-                    className="max-w-xs"
+                <Input
+                    label="Cittá"
+                    labelPlacement="inside"
+                    value={dateCustomers.city}
                     name='city'
-                    disabled={props.type == "view"}
-                >
-                    {[].map((animal) => (
-                        <SelectItem key={animal.value} value={animal.value}>
-                            {animal.label}
-                        </SelectItem>
-                    ))}
-                </Select>
+                    onChange={handleChange}
+                    isDisabled={props.type == "view"}
+                />
                 <Select
-                    label="Select an Provice"
+                    label="Provice"
                     className="max-w-xs"
                     name='provice'
-                    disabled={props.type == "view"}
+                    defaultSelectedKeys={[dateCustomers.provice]}
+                    isDisabled={props.type == "view"}
                 >
-                    {[].map((animal) => (
-                        <SelectItem key={animal.value} value={animal.value}>
-                            {animal.label}
-                        </SelectItem>
-                    ))}
+                    {
+                        // props.type != "view" &&
+                        HAS_PROVINCE.map((item) => (
+                            <SelectItem key={item} value={item}>
+                                {item}
+                            </SelectItem>
+                        ))
+                    }
                 </Select>
             </div>
             <div className='flex gap-2 flex-row items-center'>
@@ -129,7 +133,7 @@ export default function FormCustomers(props) {
                     value={dateCustomers.contact_1}
                     name='contact_1'
                     onChange={handleChange}
-                    disabled={props.type == "view"}
+                    isDisabled={props.type == "view"}
                 />
                 <Input
                     label="Telefono (2)"
@@ -140,7 +144,7 @@ export default function FormCustomers(props) {
                     value={dateCustomers.contact_1}
                     name='contact_1'
                     onChange={handleChange}
-                    disabled={props.type == "view"}
+                    isDisabled={props.type == "view"}
                 />
             </div>
             <div className='flex gap-2 flex-row items-center'>
@@ -155,7 +159,7 @@ export default function FormCustomers(props) {
                     value={dateCustomers.email_1}
                     name='email_1'
                     onChange={handleChange}
-                    disabled={props.type == "view"}
+                    isDisabled={props.type == "view"}
                 />
                 <Input
                     type="email"
@@ -168,16 +172,22 @@ export default function FormCustomers(props) {
                     value={dateCustomers.email_2}
                     name='email_2'
                     onChange={handleChange}
-                    disabled={props.type == "view"}
+                    isDisabled={props.type == "view"}
                 />
             </div>
 
-            {props.type != "view" && (
-                <Button color="primary" variant='ghost' type='submit' >Salvar</Button>
-            )}
-            {props.handleCancel && (
-                <Button onClick={() => props.handleCancel()} color="default" variant='shadow'>{props.type == "view" ? "Exit" : "Cancel"}</Button>
-            )}
+
+            {/* List Elemets */}
+            <ListElements id={dateCustomers.id} />
+
+            <div className='flex gap-2 justify-center'>
+                {props.type != "view" && (
+                    <Button color="primary" variant='ghost' type='submit' >Salvar</Button>
+                )}
+                {props.handleCancel && (
+                    <Button onClick={() => props.handleCancel()} color="danger" variant='ghost'>{props.type == "view" ? "Exit" : "Cancel"}</Button>
+                )}
+            </div>
         </form>
     )
 }

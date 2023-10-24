@@ -1,5 +1,5 @@
 "use client"
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import {
   Table,
   TableHeader,
@@ -17,10 +17,10 @@ import {
   // User,
   Pagination,
 } from "@nextui-org/react";
-import { PlusIcon } from "./svg/PlusIcon";
-import { VerticalDotsIcon } from "./svg/VerticalDotsIcon";
-import { SearchIcon } from "./svg/SearchIcon";
-import { ChevronDownIcon } from "./svg/ChevronDownIcon";
+import { PlusIcon } from "../ui/svg/PlusIcon";
+import { VerticalDotsIcon } from "../ui/svg/VerticalDotsIcon";
+import { SearchIcon } from "../ui/svg/SearchIcon";
+import { ChevronDownIcon } from "../ui/svg/ChevronDownIcon";
 import { columns, users, statusOptions } from "./mockup";
 import { capitalize } from "@/lib/utils";
 import ModalComponent from "../ui/ModalComponent";
@@ -47,6 +47,7 @@ const INITIAL_VISIBLE_COLUMNS = ["fiscale_code",
   "actions"
   ,]
 
+
 const INITIAL_ROWS_PER_PAGE = 10
 const INITIAL_STATE_IS_OPEN = { value: false, data: {}, type: "view" }
 export default function ListCustomers() {
@@ -72,9 +73,9 @@ export default function ListCustomers() {
 
   const headerColumns = useMemo(() => {
     if (visibleColumns === "all") return columns;
+    return columns.filter((column) => Array.from(visibleColumns).includes(column.uid))
+  }, [visibleColumns])
 
-    return columns.filter((column) => Array.from(visibleColumns).includes(column.uid));
-  }, [visibleColumns]);
 
   const filteredItems = useMemo(() => {
     let filteredUsers = [...users];
@@ -376,7 +377,6 @@ export default function ListCustomers() {
       <Table
         isCompact
         removeWrapper
-        aria-label="Example table with custom cells, pagination and sorting"
         bottomContent={bottomContent}
         bottomContentPlacement="outside"
         checkboxesProps={{
