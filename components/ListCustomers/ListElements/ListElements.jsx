@@ -114,6 +114,7 @@ export default function ListElements(props) {
                     className="bg-foreground text-background"
                     endContent={<PlusIcon />}
                     size="sm"
+                    isDisabled={isOpenComponent.type == "view"}
                     onClick={() => hadleShowModalComponet({ type: "create" })}
                 >
                     Add New
