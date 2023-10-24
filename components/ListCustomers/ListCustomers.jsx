@@ -17,12 +17,14 @@ import {
   User,
   Pagination,
 } from "@nextui-org/react";
-import { PlusIcon } from "./PlusIcon";
-import { VerticalDotsIcon } from "./VerticalDotsIcon";
-import { SearchIcon } from "./SearchIcon";
-import { ChevronDownIcon } from "./ChevronDownIcon";
+import { PlusIcon } from "./svg/PlusIcon";
+import { VerticalDotsIcon } from "./svg/VerticalDotsIcon";
+import { SearchIcon } from "./svg/SearchIcon";
+import { ChevronDownIcon } from "./svg/ChevronDownIcon";
 import { columns, users, statusOptions } from "./mockup";
 import { capitalize } from "@/lib/utils";
+import ModalComponent from "../ui/ModalComponent";
+import FormCustomers from "../FormCustomers/FormCustomers";
 
 const statusColorMap = {
   active: "success",
@@ -45,9 +47,12 @@ const INITIAL_VISIBLE_COLUMNS = ["fiscale_code",
   "actions"
   ,]
 
-  const INITIAL_ROWS_PER_PAGE = 10
-
-export default function ShowCustomersUi() {
+const INITIAL_ROWS_PER_PAGE = 10
+const INITIAL_STATE_IS_OPEN = { value: false, data: {}, type: "view" }
+export default function ListCustomers() {
+  // Modal
+  const [isOpenComponent, setIsOpenComponent] = useState(INITIAL_STATE_IS_OPEN)
+  // Table
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
   const [visibleColumns, setVisibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
@@ -103,6 +108,11 @@ export default function ShowCustomersUi() {
     });
   }, [sortDescriptor, items]);
 
+  const handleViewCustomers = (dataUser) => {
+    setIsOpenComponent({ data: dataUser, value: true, type: "view" })
+    console.log(dataUser)
+  }
+
   const renderCell = useCallback((user, columnKey) => {
     const cellValue = user[columnKey];
 
@@ -148,7 +158,9 @@ export default function ShowCustomersUi() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem>View</DropdownItem>
+                <DropdownItem onClick={() => handleViewCustomers(user)} >
+                  View
+                </DropdownItem>
                 <DropdownItem>Edit</DropdownItem>
                 <DropdownItem>Delete</DropdownItem>
               </DropdownMenu>
@@ -322,45 +334,62 @@ export default function ShowCustomersUi() {
     [],
   );
 
+
+
+
+
   return (
-    <Table
-      isCompact
-      removeWrapper
-      aria-label="Example table with custom cells, pagination and sorting"
-      bottomContent={bottomContent}
-      bottomContentPlacement="outside"
-      checkboxesProps={{
-        classNames: {
-          wrapper: "after:bg-foreground after:text-background text-background",
-        },
-      }}
-      classNames={classNames}
-      selectedKeys={selectedKeys}
-      selectionMode="multiple"
-      sortDescriptor={sortDescriptor}
-      topContent={topContent}
-      topContentPlacement="outside"
-      onSelectionChange={setSelectedKeys}
-      onSortChange={setSortDescriptor}
-    >
-      <TableHeader columns={headerColumns}>
-        {(column) => (
-          <TableColumn
-            key={column.uid}
-            align={column.uid === "actions" ? "center" : "start"}
-            allowsSorting={column.sortable}
-          >
-            {column.name}
-          </TableColumn>
-        )}
-      </TableHeader>
-      <TableBody emptyContent={"No users found"} items={sortedItems}>
-        {(item) => (
-          <TableRow key={item.id}>
-            {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+    <>
+      <ModalComponent
+        isOpen={isOpenComponent.value}
+        onClose={() => setIsOpenComponent(INITIAL_STATE_IS_OPEN)}
+        title={isOpenComponent.type == "view" ? "View Customers":"Create New Customers"}
+      >
+        <FormCustomers
+          {...isOpenComponent.data}
+          handleCancel={() => setIsOpenComponent(INITIAL_STATE_IS_OPEN)}
+          type={isOpenComponent.type}
+        />
+      </ModalComponent>
+      <Table
+        isCompact
+        removeWrapper
+        aria-label="Example table with custom cells, pagination and sorting"
+        bottomContent={bottomContent}
+        bottomContentPlacement="outside"
+        checkboxesProps={{
+          classNames: {
+            wrapper: "after:bg-foreground after:text-background text-background",
+          },
+        }}
+        classNames={classNames}
+        selectedKeys={selectedKeys}
+        selectionMode="multiple"
+        sortDescriptor={sortDescriptor}
+        topContent={topContent}
+        topContentPlacement="outside"
+        onSelectionChange={setSelectedKeys}
+        onSortChange={setSortDescriptor}
+      >
+        <TableHeader columns={headerColumns}>
+          {(column) => (
+            <TableColumn
+              key={column.uid}
+              align={column.uid === "actions" ? "center" : "start"}
+              allowsSorting={column.sortable}
+            >
+              {column.name}
+            </TableColumn>
+          )}
+        </TableHeader>
+        <TableBody emptyContent={"No users found"} items={sortedItems}>
+          {(item) => (
+            <TableRow key={item.id}>
+              {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+            </TableRow>
+          )}
+        </TableBody>
+      </Table>
+    </>
   );
 }
