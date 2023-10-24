@@ -1,7 +1,7 @@
 "use client"
 import { useState } from 'react';
 import useForm from '@/hooks/useForm';
-import { Button, Divider, Input, Select, Textarea } from '@nextui-org/react';
+import { Button, Divider, Input, Select, SelectItem, Textarea } from '@nextui-org/react';
 import { MailIcon } from './svg/MailIcon';
 
 
@@ -32,57 +32,58 @@ export default function FormCustomers(props) {
 
     return (
         <form
-            className='flex flex-col gap-4 w-full'
+            className='flex flex-col gap-4 w-full pb-2'
             onSubmit={handleSubmit}
         >
-            <Divider />
-            <div className='flex flex-col'>
-                <Input
-                    label="Code Fiscale"
+            <div className=''>
+                <Divider className='mb-4' />
+                <div className='flex flex-col'>
+                    <Input
+                        label="Code Fiscale"
+                        labelPlacement="outside"
+                        placeholder="..."
+                        value={dateCustomers.fiscale_code}
+                        name='fiscale_code'
+                        onChange={handleChange}
+                        disabled={props.type == "view"}
+                    />
+                </div>
+                <div className='flex gap-2 flex-row py-2'>
+                    <Input
+                        label="Nome"
+                        labelPlacement="outside"
+                        placeholder="..."
+                        // isInvalid={true}
+                        // errorMessage="Please enter a valid email"
+                        value={dateCustomers.name}
+                        name='name'
+                        onChange={handleChange}
+                        disabled={props.type == "view"}
+
+                    />
+                    <Input
+                        label="Cognome"
+                        labelPlacement="outside"
+                        placeholder="..."
+                        value={dateCustomers.last_name}
+                        name='last_name'
+                        onChange={handleChange}
+                        disabled={props.type == "view"}
+
+                    />
+                </div>
+                <Textarea
+                    name="address"
+                    label="Address"
                     labelPlacement="outside"
-                    placeholder="..."
-                    value={dateCustomers.fiscale_code}
-                    name='fiscale_code'
+                    placeholder="Enter your description"
+                    className=" w-full"
+                    value={dateCustomers.address}
                     onChange={handleChange}
                     disabled={props.type == "view"}
 
                 />
             </div>
-            <div className='flex gap-2 flex-row'>
-                <Input
-                    label="Nome"
-                    labelPlacement="outside"
-                    placeholder="..."
-                    isInvalid={true}
-                    errorMessage="Please enter a valid email"
-                    value={dateCustomers.name}
-                    name='name'
-                    onChange={handleChange}
-                    disabled={props.type == "view"}
-
-                />
-                <Input
-                    label="Cognome"
-                    labelPlacement="outside"
-                    placeholder="..."
-                    value={dateCustomers.last_name}
-                    name='last_name'
-                    onChange={handleChange}
-                    disabled={props.type == "view"}
-
-                />
-            </div>
-            <Textarea
-                name="address"
-                label="Address"
-                labelPlacement="outside"
-                placeholder="Enter your description"
-                className=" w-full"
-                value={dateCustomers.address}
-                onChange={handleChange}
-                disabled={props.type == "view"}
-
-            />
             <div className='flex gap-2 flex-row items-center'>
                 <Input
                     label="C.A.P."
@@ -172,7 +173,7 @@ export default function FormCustomers(props) {
             </div>
 
             {props.type != "view" && (
-                <Button color="primary" variant='ghost' type='submit' >Submit</Button>
+                <Button color="primary" variant='ghost' type='submit' >Salvar</Button>
             )}
             {props.handleCancel && (
                 <Button onClick={() => props.handleCancel()} color="default" variant='shadow'>{props.type == "view" ? "Exit" : "Cancel"}</Button>

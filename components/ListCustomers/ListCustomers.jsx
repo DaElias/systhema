@@ -14,7 +14,7 @@ import {
   DropdownMenu,
   DropdownItem,
   Chip,
-  User,
+  // User,
   Pagination,
 } from "@nextui-org/react";
 import { PlusIcon } from "./svg/PlusIcon";
@@ -50,6 +50,8 @@ const INITIAL_VISIBLE_COLUMNS = ["fiscale_code",
 const INITIAL_ROWS_PER_PAGE = 10
 const INITIAL_STATE_IS_OPEN = { value: false, data: {}, type: "view" }
 export default function ListCustomers() {
+  // get Data
+  // const users = []
   // Modal
   const [isOpenComponent, setIsOpenComponent] = useState(INITIAL_STATE_IS_OPEN)
   // Table
@@ -108,14 +110,29 @@ export default function ListCustomers() {
     });
   }, [sortDescriptor, items]);
 
-  const handleViewCustomers = (dataUser) => {
-    setIsOpenComponent({ data: dataUser, value: true, type: "view" })
-    console.log(dataUser)
+
+  const hadleShowModalComponet = ({ dataUser = {}, type }) =>
+    setIsOpenComponent({
+      data: dataUser, value: true, type
+    })
+
+  const handleDeleteCustomers = (id) => {
+
   }
+
+  const titleModalComponent = useMemo(() => {
+    const { type } = isOpenComponent
+    if (type == "view")
+      return "View Customer"
+    if (type == "create")
+      return "Create New Customer"
+    if (type == "edit")
+      return "Edit Customer"
+    return ""
+  }, [isOpenComponent.type])
 
   const renderCell = useCallback((user, columnKey) => {
     const cellValue = user[columnKey];
-
     switch (columnKey) {
       // case "name":
       //   return (
@@ -158,10 +175,12 @@ export default function ListCustomers() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu>
-                <DropdownItem onClick={() => handleViewCustomers(user)} >
+                <DropdownItem onClick={() => hadleShowModalComponet({ dataUser: user, type: "view" })} >
                   View
                 </DropdownItem>
-                <DropdownItem>Edit</DropdownItem>
+                <DropdownItem onClick={() => hadleShowModalComponet({ dataUser: user, type: "edit" })}>
+                  Edit
+                </DropdownItem>
                 <DropdownItem>Delete</DropdownItem>
               </DropdownMenu>
             </Dropdown>
@@ -190,12 +209,15 @@ export default function ListCustomers() {
   const topContent = useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
+        <h1>
+          Form Customers
+        </h1>
         <div className="flex justify-between gap-3 items-end">
           <Input
             isClearable
             classNames={{
               base: "w-full sm:max-w-[44%]",
-              inputWrapper: "border-1",
+              inputWrapper: "border-1 sm:h-12",
             }}
             placeholder="Search by name..."
             size="sm"
@@ -206,7 +228,7 @@ export default function ListCustomers() {
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-            <Dropdown>
+            {/* <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
                   endContent={<ChevronDownIcon className="text-small" />}
@@ -230,7 +252,7 @@ export default function ListCustomers() {
                   </DropdownItem>
                 ))}
               </DropdownMenu>
-            </Dropdown>
+            </Dropdown> */}
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
@@ -260,6 +282,7 @@ export default function ListCustomers() {
               className="bg-foreground text-background"
               endContent={<PlusIcon />}
               size="sm"
+              onClick={() => hadleShowModalComponet({ type: "create" })}
             >
               Add New
             </Button>
@@ -330,11 +353,10 @@ export default function ListCustomers() {
         "group-data-[last=true]:first:before:rounded-none",
         "group-data-[last=true]:last:before:rounded-none",
       ],
+      base: "px-2"
     }),
     [],
   );
-
-
 
 
 
@@ -343,7 +365,7 @@ export default function ListCustomers() {
       <ModalComponent
         isOpen={isOpenComponent.value}
         onClose={() => setIsOpenComponent(INITIAL_STATE_IS_OPEN)}
-        title={isOpenComponent.type == "view" ? "View Customers":"Create New Customers"}
+        title={titleModalComponent}
       >
         <FormCustomers
           {...isOpenComponent.data}
@@ -359,7 +381,7 @@ export default function ListCustomers() {
         bottomContentPlacement="outside"
         checkboxesProps={{
           classNames: {
-            wrapper: "after:bg-foreground after:text-background text-background",
+            wrapper: "after:bg-foreground after:text-background text-background ",
           },
         }}
         classNames={classNames}
