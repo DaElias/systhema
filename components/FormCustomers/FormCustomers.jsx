@@ -24,8 +24,6 @@ export default function FormCustomers(props) {
     })
     const [validate, setValidate] = useState({ name: "t" })
 
-    console.log(dateCustomers)
-
     const handleSubmit = (event) => {
         event.preventDefault()
         // const dataForm = Object.fromEntries(new window.FormData(e.target))
@@ -80,7 +78,7 @@ export default function FormCustomers(props) {
                     name="address"
                     label="Address"
                     labelPlacement="outside"
-                    placeholder="Enter your description"
+                    placeholder="Enter your address"
                     className=" w-full"
                     value={dateCustomers.address}
                     onChange={handleChange}
@@ -112,6 +110,7 @@ export default function FormCustomers(props) {
                     name='provice'
                     defaultSelectedKeys={[dateCustomers.provice]}
                     isDisabled={props.type == "view"}
+                    onChange={handleChange}
                 >
                     {
                         // props.type != "view" &&
@@ -178,7 +177,7 @@ export default function FormCustomers(props) {
 
 
             {/* List Elemets */}
-            <ListElements id={dateCustomers.id} />
+            <ListElements id={dateCustomers.id} typeCustomers={props.type} />
 
             <div className='flex gap-2 justify-center'>
                 {props.type != "view" && (

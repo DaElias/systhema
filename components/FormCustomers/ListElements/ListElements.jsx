@@ -2,6 +2,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Tooltip, getKeyValue, Divider, Button } from "@nextui-org/react";
 import ModalComponent from "@/components/ui/ModalComponent";
+import FormElement from "./FormElement/FormElement";
 import { EyeIcon } from "@/components/ui/svg/EyeIcon";
 import { EditIcon } from "@/components/ui/svg/EditIcon";
 import { DeleteIcon } from "@/components/ui/svg/DeleteIcon";
@@ -26,8 +27,7 @@ const columns = [
 
 
 export default function ListElements(props) {
-    const [isOpenComponent, setIsOpenComponent] = useState({ value: false, data: { ...props }, type: "view" })
-
+    const [isOpenComponent, setIsOpenComponent] = useState({ value: false, data: { ...props }, type: props.typeCustomers })
     const titleModalComponent = useMemo(() => {
         const { type } = isOpenComponent
         if (type == "view")
@@ -45,29 +45,29 @@ export default function ListElements(props) {
         })
 
 
-    const renderCell = useCallback((user, columnKey) => {
-        const cellValue = user[columnKey];
+    const renderCell = useCallback((element, columnKey) => {
+        const cellValue = element[columnKey];
         switch (columnKey) {
             // case "name":
             //     return (
-            //         <User
-            //             avatarProps={{ radius: "lg", src: user.avatar }}
-            //             description={user.email}
+            //         <element
+            //             avatarProps={{ radius: "lg", src: element.avatar }}
+            //             description={element.email}
             //             name={cellValue}
             //         >
-            //             {user.email}
-            //         </User>
+            //             {element.email}
+            //         </element>
             //     );
             case "role":
                 return (
                     <div className="flex flex-col">
                         <p className="text-bold text-sm capitalize">{cellValue}</p>
-                        <p className="text-bold text-sm capitalize text-default-400">{user.team}</p>
+                        <p className="text-bold text-sm capitalize text-default-400">{element.team}</p>
                     </div>
                 );
             case "status":
                 return (
-                    <Chip className="capitalize" color={statusColorMap[user.status]} size="sm" variant="flat">
+                    <Chip className="capitalize" color={statusColorMap[element.status]} size="sm" variant="flat">
                         {TRADUCTION_ITALY[cellValue]}
                     </Chip>
                 );
@@ -76,19 +76,24 @@ export default function ListElements(props) {
                     <div className="relative flex items-center gap-2">
                         <Tooltip content="Details">
                             {/* <span className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => setIsOpenComponent(prev => { return { ...prev, value: true } })}> */}
-                            <span className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => hadleShowModalComponet({ type: "view" })}>
+                            <button
+                                className="text-lg text-default-800 cursor-pointer active:opacity-50 disabled:opacity-50" onClick={() => hadleShowModalComponet({ type: "view", element })}>
                                 <EyeIcon />
-                            </span>
+                            </button>
                         </Tooltip>
-                        <Tooltip content="Edit user">
-                            <span className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => hadleShowModalComponet({ type: "edit" })}>
+                        <Tooltip content="Edit element">
+                            <button
+                                disabled={isOpenComponent.type == "view"}
+                                className="text-lg text-default-800 cursor-pointer active:opacity-50 disabled:opacity-50" onClick={() => hadleShowModalComponet({ type: "edit", element })}>
                                 <EditIcon />
-                            </span>
+                            </button>
                         </Tooltip>
-                        <Tooltip color="danger" content="Delete user">
-                            <span className="text-lg text-danger cursor-pointer active:opacity-50">
+                        <Tooltip color="danger" content="Delete element">
+                            <button
+                                disabled={isOpenComponent.type == "view"}
+                                className="text-lg text-danger cursor-pointer active:opacity-50 disabled:opacity-50">
                                 <DeleteIcon />
-                            </span>
+                            </button>
                         </Tooltip>
                     </div>
                 );
@@ -96,7 +101,6 @@ export default function ListElements(props) {
                 return cellValue;
         }
     }, []);
-
     return (
         <>
             <ModalComponent
@@ -106,6 +110,7 @@ export default function ListElements(props) {
                 title={titleModalComponent}
                 size="md"
             >
+                <FormElement {...isOpenComponent.data} />
             </ModalComponent>
             <Divider className='mb-2' />
             <div className="flex justify-between items-center">
