@@ -3,7 +3,7 @@ import { prisma } from "@/util/database";
 // import { validateToken } from "@/util/jwt";
 
 
-export async function GetCustomersController(req, res) {
+export async function getCustomersController(req, res) {
     try {
         // if (! await validateToken(req))
         // return new NextResponse("unauthorized", { status: 401 })

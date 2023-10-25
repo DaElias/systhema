@@ -3,7 +3,7 @@ import { prisma } from "@/util/database";
 // import { validateToken } from "@/util/jwt";
 
 
-export async function GetElementController(req, res) {
+export async function getElementController(req, res) {
     try {
         // if (! await validateToken(req))
         // return new NextResponse("unauthorized", { status: 401 })
@@ -18,7 +18,7 @@ export async function GetElementController(req, res) {
 
 
 
-export async function GetElementByCustomesIdController(req, res) {
+export async function getElementByCustomesIdController(req, res) {
     try {
         // if (! await validateToken(req))
         // return new NextResponse("unauthorized", { status: 401 })

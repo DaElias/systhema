@@ -20,7 +20,7 @@ function useFetch(url) {
                 setLoading(false)
             } catch (error) {
                 if (error.name === 'AbortError') {
-                    console.log('La solicitud fue cancelada.')
+                    // console.log('La solicitud fue cancelada.')
                 } else {
                     setError(error.message)
                     setLoading(false)

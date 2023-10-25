@@ -1,17 +1,11 @@
-import { NextResponse } from "next/server";
-import { prisma } from "@/util/database";
-// import { validateToken } from "@/util/jwt";
+import { createEdgeRouter } from "next-connect";
+import { getCustomersController } from "@/controller/customers.controller";
 
+const router = createEdgeRouter();
 
-export async function GET(req, res) {
-    try {
-        // if (! await validateToken(req))
-        // return new NextResponse("unauthorized", { status: 401 })
-        const customers = await prisma.customers.findMany()
+router
+    .get(getCustomersController)
 
-        return new NextResponse(JSON.stringify(customers), { status: 200 })
-    } catch (error) {
-        // console.log(error)
-        return new NextResponse(JSON.stringify(error.toString()), { status: 400 })
-    }
+export async function GET(request, ctx) {
+    return router.run(request, ctx)
 }
