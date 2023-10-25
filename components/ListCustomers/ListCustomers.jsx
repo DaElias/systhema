@@ -7,10 +7,15 @@ import { PlusIcon } from "../ui/svg/PlusIcon";
 import { VerticalDotsIcon } from "../ui/svg/VerticalDotsIcon";
 import { SearchIcon } from "../ui/svg/SearchIcon";
 import { ChevronDownIcon } from "../ui/svg/ChevronDownIcon";
-import { columns, users, statusOptions } from "./mockup";
+import {
+  columns,
+  constumers,
+  statusOptions
+} from "./mockup";
 import { capitalize } from "@/lib/utils";
 import ModalComponent from "../ui/ModalComponent";
 import FormCustomers from "../FormCustomers/FormCustomers";
+import useFetch from "@/hooks/useFetch";
 
 const statusColorMap = {
   active: "success",
@@ -38,7 +43,8 @@ const INITIAL_ROWS_PER_PAGE = 10
 const INITIAL_STATE_IS_OPEN = { value: false, data: {}, type: "view" }
 export default function ListCustomers() {
   // get Data
-  // const users = []
+  const [data = [], isLoading, error] = useFetch("/api/customers")
+  const constumers = useMemo(() => !data?.length ? [] : data, [data])
   // Modal
   const [isOpenComponent, setIsOpenComponent] = useState(INITIAL_STATE_IS_OPEN)
   // Table
@@ -53,7 +59,7 @@ export default function ListCustomers() {
   });
   const [page, setPage] = useState(1);
 
-  const pages = Math.ceil(users.length / rowsPerPage);
+  const pages = Math.ceil(constumers.length / rowsPerPage);
 
   const hasSearchFilter = Boolean(filterValue);
 
@@ -64,21 +70,21 @@ export default function ListCustomers() {
 
 
   const filteredItems = useMemo(() => {
-    let filteredUsers = [...users];
+    let filteredconstumers = [...constumers];
 
     if (hasSearchFilter) {
-      filteredUsers = filteredUsers.filter((user) =>
+      filteredconstumers = filteredconstumers.filter((user) =>
         user.name.toLowerCase().includes(filterValue.toLowerCase()),
       );
     }
     if (statusFilter !== "all" && Array.from(statusFilter).length !== statusOptions.length) {
-      filteredUsers = filteredUsers.filter((user) =>
+      filteredconstumers = filteredconstumers.filter((user) =>
         Array.from(statusFilter).includes(user.status),
       );
     }
 
-    return filteredUsers;
-  }, [users, filterValue, statusFilter]);
+    return filteredconstumers;
+  }, [constumers, filterValue, statusFilter]);
 
   const items = useMemo(() => {
     const start = (page - 1) * rowsPerPage;
@@ -252,7 +258,7 @@ export default function ListCustomers() {
               </DropdownTrigger>
               <DropdownMenu
                 disallowEmptySelection
-                aria-label="Table Columns"
+                // aria-label="Table Columns"
                 closeOnSelect={false}
                 selectedKeys={visibleColumns}
                 selectionMode="multiple"
@@ -276,7 +282,7 @@ export default function ListCustomers() {
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">Total {users.length} users</span>
+          <span className="text-default-400 text-small">Total {constumers.length} constumers</span>
           <label className="flex items-center text-default-400 text-small">
             Rows per page:
             <select
@@ -297,7 +303,7 @@ export default function ListCustomers() {
     visibleColumns,
     onSearchChange,
     onRowsPerPageChange,
-    users.length,
+    constumers.length,
     hasSearchFilter,
   ]);
 
@@ -390,7 +396,10 @@ export default function ListCustomers() {
             </TableColumn>
           )}
         </TableHeader>
-        <TableBody emptyContent={"No users found"} items={sortedItems}>
+        <TableBody
+          emptyContent={"No constumers found"} items={sortedItems}
+          isLoading={isLoading}
+        >
           {(item) => (
             <TableRow key={item.id}>
               {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}

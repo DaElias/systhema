@@ -1,7 +1,7 @@
 "use client"
 import useForm from "@/hooks/useForm";
 import { TRADUCTION_ITALY } from "@/lib/utils";
-import { Divider, Select, SelectItem, Textarea } from "@nextui-org/react";
+import { Button, Divider, Select, SelectItem, Textarea } from "@nextui-org/react";
 import { Input } from '@nextui-org/react';
 
 
@@ -10,7 +10,7 @@ import { Input } from '@nextui-org/react';
 export default function FormElement(props) {
     const [element, handleChange, resetForm] = useForm({ name: props.name, description: props.description, status: props.status })
 
-
+    console.log(props)
     return (
         <div className="flex flex-col gap-3">
             <Divider className='mb-2' />
@@ -35,22 +35,21 @@ export default function FormElement(props) {
                 onChange={handleChange}
                 isDisabled={props.type == "view"}
             />
-            {/* <Select
+            <Select
                 label="Category"
                 className="max-w-xs"
                 name='category'
-                // defaultSelectedKeys={[dateCustomers.category]}
+                defaultSelectedKeys={[element.category]}
                 isDisabled={props.type == "view"}
             >
                 {
-                    // props.type != "view" &&
-                    HAS_PROVINCE.map((item) => (
+                    [].map((item) => (
                         <SelectItem key={item} value={item}>
                             {item}
                         </SelectItem>
                     ))
                 }
-            </Select> */}
+            </Select>
             <Select
                 label="Status"
                 className="w-full"
@@ -58,7 +57,6 @@ export default function FormElement(props) {
                 defaultSelectedKeys={[element.status]}
                 isDisabled={props.type == "view"}
                 onChange={handleChange}
-                variant={statusColorMap[element.status]}
             >
                 {
                     // props.type != "view" &&
@@ -69,6 +67,15 @@ export default function FormElement(props) {
                     ))
                 }
             </Select>
+
+            <div className='flex gap-2 justify-center'>
+                {props.type != "view" && (
+                    <Button color="primary" variant='ghost' type='submit' >Salvar</Button>
+                )}
+                {props.handleCancel && (
+                    <Button onClick={() => props.handleCancel()} color="danger" variant='ghost'>{props.type == "view" ? "Exit" : "Cancel"}</Button>
+                )}
+            </div>
         </div>
     )
 }

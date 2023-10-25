@@ -1,4 +1,4 @@
-const columns = [
+export const columns = [
   { name: "Code Fiscale", uid: "fiscale_code" },
   { name: "Nome", uid: "name", sortable: true },
   { name: "Cognome", uid: "last_name" },
@@ -13,13 +13,13 @@ const columns = [
   { name: "ACTIONS", uid: "actions" },
 ];
 
-const statusOptions = [
+export const statusOptions = [
   { name: "Active", uid: "active" },
   { name: "Paused", uid: "paused" },
   { name: "Vacation", uid: "vacation" },
 ];
 
-const users = [
+export const constumers = [
   {
     "id": "1",
     "name": "Juan",
@@ -342,4 +342,3 @@ const users = [
   }
 ]
 
-export { columns, users, statusOptions };

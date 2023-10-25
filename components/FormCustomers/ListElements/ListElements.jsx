@@ -108,9 +108,13 @@ export default function ListElements(props) {
                 isOpen={isOpenComponent.value}
                 onClose={() => setIsOpenComponent(prev => { return { ...prev, value: false } })}
                 title={titleModalComponent}
-                size="md"
+                // size="md"
+                size={"sm"}
             >
-                <FormElement {...isOpenComponent.data} />
+                <FormElement {...isOpenComponent.data}
+                    type={isOpenComponent.type}
+                    handleCancel={() => setIsOpenComponent(prev => { return { ...prev, value: false } })}
+                />
             </ModalComponent>
             <Divider className='mb-2' />
             <div className="flex justify-between items-center">
@@ -125,7 +129,8 @@ export default function ListElements(props) {
                     Add New
                 </Button>
             </div>
-            <Table >
+            <Table
+                shadow="none" >
                 <TableHeader columns={columns}>
                     {(column) => (
                         <TableColumn key={column.uid} align={column.uid === "actions" ? "center" : "start"}>
