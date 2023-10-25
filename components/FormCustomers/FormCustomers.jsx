@@ -4,7 +4,7 @@ import useForm from '@/hooks/useForm';
 import { Button, Divider, Input, Select, SelectItem, Textarea } from '@nextui-org/react';
 import { MailIcon } from '../ui/svg/MailIcon';
 import { HAS_PROVINCE } from '@/lib/utils';
-import ListElements from '../ListCustomers/ListElements/ListElements';
+import ListElements from './ListElements/ListElements';
 
 
 export default function FormCustomers(props) {

@@ -1,21 +1,7 @@
 "use client"
 import { useState, useCallback, useMemo, useEffect } from "react";
 import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  Input,
-  Button,
-  DropdownTrigger,
-  Dropdown,
-  DropdownMenu,
-  DropdownItem,
-  Chip,
-  // User,
-  Pagination,
+  Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button, DropdownTrigger, Dropdown, DropdownMenu, DropdownItem, Chip, Pagination,
 } from "@nextui-org/react";
 import { PlusIcon } from "../ui/svg/PlusIcon";
 import { VerticalDotsIcon } from "../ui/svg/VerticalDotsIcon";
