@@ -30,7 +30,7 @@ model Customers {
     id        Int    @id @default(autoincrement())
     name      String
     last_name String
-    address   String
+    address   String?
 
     city    String?
     provice String?
@@ -38,11 +38,11 @@ model Customers {
     contact_1 String
     contact_2 String?
 
-    email_1 String
-    email_2 String
+    email_1 String?
+    email_2 String?
 
-    zip_code     String
-    fiscale_code String
+    zip_code     String?
+    fiscale_code String?
 
     createdAt DateTime? @default(now())
 
@@ -50,12 +50,12 @@ model Customers {
 }
 
 model Element {
-    id                   Int    @id @default(autoincrement())
+    id                   Int     @id @default(autoincrement())
     name                 String
-    description          String @db.Text
-    delivery_description String @db.Text
+    description          String? @db.Text
+    delivery_description String? @db.Text
 
-    state     State
+    state     State     @default(IN_PROCESS)
     updatedAt DateTime? @default(now()) @updatedAt
     createdAt DateTime? @default(now())
 
@@ -79,7 +79,7 @@ enum State {
 model Category {
     id          Int       @id @default(autoincrement())
     name        String    @unique
-    description String
+    description String?
     updatedAt   DateTime? @default(now()) @updatedAt
     createdAt   DateTime? @default(now())
     Element     Element[]
