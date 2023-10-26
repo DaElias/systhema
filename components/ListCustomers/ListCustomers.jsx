@@ -1,7 +1,7 @@
 "use client"
 import { useState, useCallback, useMemo, useEffect } from "react";
 import {
-  Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button, DropdownTrigger, Dropdown, DropdownMenu, DropdownItem, Chip, Pagination,
+  Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button, DropdownTrigger, Dropdown, DropdownMenu, DropdownItem, Chip, Pagination, Divider,
 } from "@nextui-org/react";
 import { PlusIcon } from "../ui/svg/PlusIcon";
 import { VerticalDotsIcon } from "../ui/svg/VerticalDotsIcon";
@@ -16,7 +16,8 @@ import { capitalize } from "@/lib/utils";
 import ModalComponent from "../ui/ModalComponent";
 import FormCustomers from "../FormCustomers/FormCustomers";
 import useFetch from "@/hooks/useFetch";
-
+import Image from "next/image";
+import LOGO from "/public/logo.png"
 const statusColorMap = {
   active: "success",
   paused: "danger",
@@ -24,7 +25,8 @@ const statusColorMap = {
 };
 
 
-const INITIAL_VISIBLE_COLUMNS = ["fiscale_code",
+const INITIAL_VISIBLE_COLUMNS = [
+  // "fiscale_code",
   "name",
   "last_name",
   "address",
@@ -202,9 +204,9 @@ export default function ListCustomers() {
   const topContent = useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
-        <h1>
-          Form Customers
-        </h1>
+        <Image src={LOGO} alt="logo" />
+        <Divider className='' />
+        {/* <h1>Form Customers</h1> */}
         <div className="flex justify-between gap-3 items-end">
           <Input
             isClearable

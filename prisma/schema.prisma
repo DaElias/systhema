@@ -11,11 +11,11 @@ datasource db {
 }
 
 model User {
-    id        Int      @id @default(autoincrement())
+    id        Int       @id @default(autoincrement())
     name      String
     last_name String
     contact   String?
-    email     String   @unique
+    email     String    @unique
     password  String
     createdAt DateTime? @default(now())
     role      Role?     @default(USER)
@@ -50,9 +50,10 @@ model Customers {
 }
 
 model Element {
-    id          Int    @id @default(autoincrement())
-    name        String
-    description String
+    id                   Int    @id @default(autoincrement())
+    name                 String
+    description          String @db.Text
+    delivery_description String @db.Text
 
     state     State
     updatedAt DateTime? @default(now()) @updatedAt
@@ -79,7 +80,7 @@ model Category {
     id          Int       @id @default(autoincrement())
     name        String    @unique
     description String
-    updatedAt   DateTime?  @default(now()) @updatedAt
-    createdAt   DateTime?  @default(now())
+    updatedAt   DateTime? @default(now()) @updatedAt
+    createdAt   DateTime? @default(now())
     Element     Element[]
 }

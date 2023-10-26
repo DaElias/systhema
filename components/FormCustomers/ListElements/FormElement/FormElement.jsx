@@ -11,11 +11,10 @@ export default function FormElement(props) {
     const [element, handleChange, resetForm] = useForm(
         {
             name: props.name, description: props.description,
-            state: props.state, category: props?.Category?.name
+            state: props.state, category: props?.Category?.name,
+            delivery_description: props.delivery_description
         }
     )
-
-    console.log(props)
 
     return (
         <div className="flex flex-col gap-3">
@@ -38,6 +37,15 @@ export default function FormElement(props) {
                 labelPlacement="outside"
                 className="w-full max-w-3xl"
                 value={element.description}
+                onChange={handleChange}
+                isDisabled={props.type == "view"}
+            />
+            <Textarea
+                name="delivery_description"
+                label="Description Delivery"
+                labelPlacement="outside"
+                className="w-full max-w-3xl"
+                value={element.delivery_description}
                 onChange={handleChange}
                 isDisabled={props.type == "view"}
             />

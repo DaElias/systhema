@@ -23,7 +23,7 @@ const statusColorMap = {
 
 const columns = [
     { name: "NAME", uid: "name" },
-    { name: "CATEGORY", uid: "category" },
+    { name: "CATEGORY", uid: "Category" },
     { name: "STATUS", uid: "state" },
     { name: "ACTIONS", uid: "actions" },
 ];
@@ -33,7 +33,7 @@ export default function ListElements(props) {
     const [data, isLoading, isError] = useFetch(`/api/elements/${props.id}`)
     const listElements = useMemo(() => !data?.length ? [] : data, [data])
     const { listCategories } = useCategory()
-
+    console.log(listElements)
     const [isOpenComponentAddCategory, setIsOpenComponentAddCategory] = useState(false)
     const [isOpenComponentElements, setIsOpenComponentElements] = useState({ value: false, data: { ...props }, type: props.typeCustomers })
     const titleModalComponent = useMemo(() => {
@@ -55,16 +55,8 @@ export default function ListElements(props) {
     const renderCell = useCallback((element, columnKey) => {
         const cellValue = element[columnKey];
         switch (columnKey) {
-            // case "name":
-            //     return (
-            //         <element
-            //             avatarProps={{ radius: "lg", src: element.avatar }}
-            //             description={element.email}
-            //             name={cellValue}
-            //         >
-            //             {element.email}
-            //         </element>
-            //     );
+            case "Category":
+                return cellValue?.name
             case "role":
                 return (
                     <div className="flex flex-col">
