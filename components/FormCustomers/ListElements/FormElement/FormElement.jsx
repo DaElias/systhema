@@ -1,16 +1,22 @@
 "use client"
 import useForm from "@/hooks/useForm";
-import { TRADUCTION_ITALY } from "@/lib/utils";
 import { Button, Divider, Select, SelectItem, Textarea } from "@nextui-org/react";
 import { Input } from '@nextui-org/react';
+import { TRADUCTION_ITALY } from "@/lib/utils";
 
 
 
 
 export default function FormElement(props) {
-    const [element, handleChange, resetForm] = useForm({ name: props.name, description: props.description, status: props.status })
+    const [element, handleChange, resetForm] = useForm(
+        {
+            name: props.name, description: props.description,
+            state: props.state, category: props?.Category?.name
+        }
+    )
 
     console.log(props)
+
     return (
         <div className="flex flex-col gap-3">
             <Divider className='mb-2' />
@@ -37,24 +43,24 @@ export default function FormElement(props) {
             />
             <Select
                 label="Category"
-                className="max-w-xs"
+                className="w-full"
                 name='category'
                 defaultSelectedKeys={[element.category]}
                 isDisabled={props.type == "view"}
             >
                 {
-                    [].map((item) => (
-                        <SelectItem key={item} value={item}>
-                            {item}
+                    props.listCategories.map((item) => (
+                        <SelectItem key={item.name} value={item.id}>
+                            {item.name}
                         </SelectItem>
                     ))
                 }
             </Select>
             <Select
-                label="Status"
+                label="state"
                 className="w-full"
-                name='status'
-                defaultSelectedKeys={[element.status]}
+                name='state'
+                defaultSelectedKeys={[element.state]}
                 isDisabled={props.type == "view"}
                 onChange={handleChange}
             >

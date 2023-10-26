@@ -23,7 +23,10 @@ export async function getElementByCustomesIdController(req, res) {
         // if (! await validateToken(req))
         // return new NextResponse("unauthorized", { status: 401 })
         const { id } = res.params;
-        const elements = await prisma.element.findMany({ where: { customer_id: parseInt(id) } })
+        const elements = await prisma.element.findMany({
+            where: { customer_id: parseInt(id) },
+            select: { Category: { select: { name: true } }, name: true, id: true, description: true, state: true }
+        })
 
         return new NextResponse(JSON.stringify(elements), { status: 200 })
     } catch (error) {

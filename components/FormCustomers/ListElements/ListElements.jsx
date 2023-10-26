@@ -1,16 +1,17 @@
 "use client"
 import { useCallback, useMemo, useState } from "react";
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Tooltip, getKeyValue, Divider, Button, Spinner } from "@nextui-org/react";
-import ModalComponent from "@/components/ui/ModalComponent";
 import FormElement from "./FormElement/FormElement";
+import useFetch from "@/hooks/useFetch";
+import FormCategory from "@/components/FormCategory/FormCategory";
+import useCategory from "@/hooks/getsHooks/useCategory";
+import ModalComponent from "@/components/ui/ModalComponent";
 import { EyeIcon } from "@/components/ui/svg/EyeIcon";
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Tooltip, Divider, Button, Spinner } from "@nextui-org/react";
 import { EditIcon } from "@/components/ui/svg/EditIcon";
 import { DeleteIcon } from "@/components/ui/svg/DeleteIcon";
 import { TRADUCTION_ITALY } from "@/lib/utils";
-import { elements } from "./mockup";
 import { PlusIcon } from "@/components/ui/svg/PlusIcon";
-import useFetch from "@/hooks/useFetch";
-import FormCategory from "@/components/FormCategory/FormCategory";
+import { elements } from "./mockup";
 
 const statusColorMap = {
     IN_PROCESS: "warning",
@@ -31,6 +32,8 @@ const columns = [
 export default function ListElements(props) {
     const [data, isLoading, isError] = useFetch(`/api/elements/${props.id}`)
     const listElements = useMemo(() => !data?.length ? [] : data, [data])
+    const { listCategories } = useCategory()
+
     const [isOpenComponentAddCategory, setIsOpenComponentAddCategory] = useState(false)
     const [isOpenComponentElements, setIsOpenComponentElements] = useState({ value: false, data: { ...props }, type: props.typeCustomers })
     const titleModalComponent = useMemo(() => {
@@ -120,6 +123,8 @@ export default function ListElements(props) {
                 <FormElement {...isOpenComponentElements.data}
                     type={isOpenComponentElements.type}
                     handleCancel={() => setIsOpenComponentElements(prev => { return { ...prev, value: false } })}
+                    listCategories={listCategories}
+                    category={isOpenComponentElements?.data?.Category?.name}
                 />
             </ModalComponent>
 
@@ -132,7 +137,10 @@ export default function ListElements(props) {
                 // size="md"
                 size={"sm"}
             >
-                <FormCategory handleCancel={() => setIsOpenComponentAddCategory(false)} />
+                <FormCategory
+                    handleCancel={() => setIsOpenComponentAddCategory(false)}
+                    listCategories={listCategories}
+                />
             </ModalComponent>
 
             <Divider className='mb-2' />
