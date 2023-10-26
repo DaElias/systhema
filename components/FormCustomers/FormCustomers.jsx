@@ -5,6 +5,7 @@ import { Button, Divider, Input, Select, SelectItem, Textarea } from '@nextui-or
 import { MailIcon } from '../ui/svg/MailIcon';
 import { HAS_PROVINCE } from '@/lib/utils';
 import ListElements from './ListElements/ListElements';
+import Link from 'next/link';
 
 
 export default function FormCustomers(props) {
@@ -123,28 +124,49 @@ export default function FormCustomers(props) {
                 </Select>
             </div>
             <div className='flex gap-2 flex-row items-center'>
-                <Input
-                    label="Telefono (1)"
-                    labelPlacement="outside"
-                    startContent={
-                        <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                    }
-                    value={dateCustomers.contact_1}
-                    name='contact_1'
-                    onChange={handleChange}
-                    isDisabled={props.type == "view"}
-                />
-                <Input
-                    label="Telefono (2)"
-                    labelPlacement="outside"
-                    startContent={
-                        <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
-                    }
-                    value={dateCustomers.contact_2}
-                    name='contact_2'
-                    onChange={handleChange}
-                    isDisabled={props.type == "view"}
-                />
+                <div className='w-full'>
+                    <Input
+                        label="Telefono (1)"
+                        labelPlacement="outside"
+                        startContent={
+                            <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                        }
+                        value={dateCustomers.contact_1}
+                        name='contact_1'
+                        onChange={handleChange}
+                        isDisabled={props.type == "view"}
+                    />
+                    {dateCustomers.contact_1 && (
+                        <Link
+                            className='border-green-500 border-b-2 mx-2 text-green-500'
+                            href={`https://wa.me/${dateCustomers.contact_1}`}
+                            target='_blank'
+                        >
+                            Vai su Whatsapp
+                        </Link>
+                    )}
+                </div>
+                <div className='w-full'>
+                    <Input
+                        label="Telefono (2)"
+                        labelPlacement="outside"
+                        startContent={
+                            <MailIcon className="text-2xl text-default-400 pointer-events-none flex-shrink-0" />
+                        }
+                        value={dateCustomers.contact_2}
+                        name='contact_2'
+                        onChange={handleChange}
+                        isDisabled={props.type == "view"}
+                    />
+                    {dateCustomers.contact_2 && (
+                        <Link
+                            className='border-green-500 border-b-2 mx-2 text-green-500'
+                            href={`https://wa.me/${dateCustomers.contact_2}`}
+                            target='_blank' >
+                            Vai su Whatsapp
+                        </Link>
+                    )}
+                </div>
             </div>
             <div className='flex gap-2 flex-row items-center'>
                 <Input

@@ -33,7 +33,7 @@ export default function ListElements(props) {
     const [data, isLoading, isError] = useFetch(`/api/elements/${props.id}`)
     const listElements = useMemo(() => !data?.length ? [] : data, [data])
     const { listCategories } = useCategory()
-    console.log(listElements)
+
     const [isOpenComponentAddCategory, setIsOpenComponentAddCategory] = useState(false)
     const [isOpenComponentElements, setIsOpenComponentElements] = useState({ value: false, data: { ...props }, type: props.typeCustomers })
     const titleModalComponent = useMemo(() => {

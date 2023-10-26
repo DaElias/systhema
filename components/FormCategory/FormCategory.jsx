@@ -8,7 +8,7 @@ export default function FormCategory({ handleCancel, listCategories = [] }) {
     const [dataForm, handleChange, resetForm] = useForm({ name: "", description: "" })
     const [validateError, setValidateError] = useState({ error: false })
     const listCategoriesString = useMemo(() => listCategories.map(item => item.name.toLowerCase()), [])
-    console.log(listCategories)
+
     const handleSubmit = async (event) => {
         event.preventDefault()
         if (dataForm.name.length == 0 || !dataForm.description.length == 0)
