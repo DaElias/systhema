@@ -1,24 +1,23 @@
 "use client"
-import { useCallback, useMemo, useState } from "react";
-import FormElement from "./FormElement/FormElement";
-import FormCategory from "@/components/FormCategory/FormCategory";
-import useCategory from "@/hooks/getsHooks/useCategory";
-import ModalComponent from "@/components/ui/ModalComponent";
-import { EyeIcon } from "@/components/ui/svg/EyeIcon";
-import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Tooltip, Divider, Button, Spinner } from "@nextui-org/react";
-import { EditIcon } from "@/components/ui/svg/EditIcon";
-import { DeleteIcon } from "@/components/ui/svg/DeleteIcon";
-import { TRADUCTION_ITALY } from "@/lib/utils";
-import { PlusIcon } from "@/components/ui/svg/PlusIcon";
-// import { elements } from "./mockup";
-import useListElements from "@/hooks/getsHooks/useListElements";
+import { useCallback, useMemo, useState } from "react"
+import FormElement from "./FormElement/FormElement"
+import FormCategory from "@/components/FormCategory/FormCategory"
+import useCategory from "@/hooks/getsHooks/useCategory"
+import ModalComponent from "@/components/ui/ModalComponent"
+import { EyeIcon } from "@/components/ui/svg/EyeIcon"
+import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip, Tooltip, Divider, Button, Spinner } from "@nextui-org/react"
+import { EditIcon } from "@/components/ui/svg/EditIcon"
+import { DeleteIcon } from "@/components/ui/svg/DeleteIcon"
+import { TRADUCTION_ITALY } from "@/lib/utils"
+import { PlusIcon } from "@/components/ui/svg/PlusIcon"
+// import { elements } from "./mockup"
 
 const statusColorMap = {
     IN_PROCESS: "warning",
     READY: "success",
     WAITING: "warning",
     HAS_NO_REPAIR: "danger",
-};
+}
 
 
 const columns = [
@@ -26,15 +25,18 @@ const columns = [
     { name: "CATEGORY", uid: "Category" },
     { name: "STATUS", uid: "state" },
     { name: "ACTIONS", uid: "actions" },
-];
+]
 
 
-export default function ListElements(props) {
-    const [listElements, isLoading, isError] = useListElements({ id: props.id, type: props.typeCustomers })
+export default function ListElements({ typeCustomers, listElements, isLoading, handleCreateElement }) {
     const { listCategories } = useCategory()
-
     const [isOpenComponentAddCategory, setIsOpenComponentAddCategory] = useState(false)
-    const [isOpenComponentElements, setIsOpenComponentElements] = useState({ value: false, data: { ...props }, type: props.typeCustomers })
+    const [isOpenComponentElements, setIsOpenComponentElements] = useState({
+        value: false,
+        data: { typeCustomers, listElements, isLoading },
+        type: typeCustomers
+    })
+
     const titleModalComponent = useMemo(() => {
         const { type } = isOpenComponentElements
         if (type == "view")
@@ -52,7 +54,7 @@ export default function ListElements(props) {
         })
 
     const renderCell = useCallback((element, columnKey) => {
-        const cellValue = element[columnKey];
+        const cellValue = element[columnKey]
         switch (columnKey) {
             case "Category":
                 return cellValue?.name
@@ -62,14 +64,14 @@ export default function ListElements(props) {
                         <p className="text-bold text-sm capitalize">{cellValue}</p>
                         <p className="text-bold text-sm capitalize text-default-400">{element.team}</p>
                     </div>
-                );
+                )
             case "state":
                 return (
                     <Chip className="capitalize" color={statusColorMap[element.state]} size="sm" variant="flat">
                         {TRADUCTION_ITALY[cellValue]}
                         {/* {cellValue} */}
                     </Chip>
-                );
+                )
             case "actions":
                 return (
                     <div className="relative flex items-center gap-2">
@@ -95,27 +97,28 @@ export default function ListElements(props) {
                             </button>
                         </Tooltip>
                     </div>
-                );
+                )
             default:
-                return cellValue;
+                return cellValue
         }
-    }, []);
+    }, [])
     return (
         <>
             {/* Component of Elements */}
             <ModalComponent
                 isDismissable={isOpenComponentElements.type == "view"}
                 isOpen={isOpenComponentElements.value}
-                onClose={() => setIsOpenComponentElements(prev => { return { ...prev, value: false } })}
+                onClose={() => setIsOpenComponentElements(prev => { return { ...prev, value: false, type: typeCustomers } })}
                 title={titleModalComponent}
                 // size="md"
                 size={"sm"}
             >
                 <FormElement {...isOpenComponentElements.data}
                     type={isOpenComponentElements.type}
-                    handleCancel={() => setIsOpenComponentElements(prev => { return { ...prev, value: false } })}
+                    handleCancel={() => setIsOpenComponentElements(prev => { return { ...prev, value: false, type: typeCustomers } })}
                     listCategories={listCategories}
                     category={isOpenComponentElements?.data?.Category?.name}
+                    handleCreateElement={handleCreateElement}
                 />
             </ModalComponent>
 
@@ -170,9 +173,9 @@ export default function ListElements(props) {
                             </TableColumn>
                         )}
                     </TableHeader>
-                    <TableBody items={listElements}>
-                        {(item) => (
-                            <TableRow key={item.id}>
+                    <TableBody items={listElements || []}>
+                        {(item, index) => (
+                            <TableRow key={index}>
                                 {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
                             </TableRow>
                         )}

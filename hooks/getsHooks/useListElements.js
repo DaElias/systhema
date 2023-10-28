@@ -19,7 +19,5 @@ export default function useListElements({ id, type }) {
             getData()
     }, [id])
     const listElements = useMemo(() => !list?.length ? [] : list, [list])
-    console.log(listElements)
-
-    return [listElements, isLoading, isError]
+    return [listElements, isLoading, isError, setList]
 }
