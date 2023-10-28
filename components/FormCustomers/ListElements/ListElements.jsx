@@ -1,7 +1,6 @@
 "use client"
 import { useCallback, useMemo, useState } from "react";
 import FormElement from "./FormElement/FormElement";
-import useFetch from "@/hooks/useFetch";
 import FormCategory from "@/components/FormCategory/FormCategory";
 import useCategory from "@/hooks/getsHooks/useCategory";
 import ModalComponent from "@/components/ui/ModalComponent";
@@ -11,7 +10,8 @@ import { EditIcon } from "@/components/ui/svg/EditIcon";
 import { DeleteIcon } from "@/components/ui/svg/DeleteIcon";
 import { TRADUCTION_ITALY } from "@/lib/utils";
 import { PlusIcon } from "@/components/ui/svg/PlusIcon";
-import { elements } from "./mockup";
+// import { elements } from "./mockup";
+import useListElements from "@/hooks/getsHooks/useListElements";
 
 const statusColorMap = {
     IN_PROCESS: "warning",
@@ -30,8 +30,7 @@ const columns = [
 
 
 export default function ListElements(props) {
-    const [data, isLoading, isError] = useFetch(`/api/elements/${props.id}`)
-    const listElements = useMemo(() => !data?.length ? [] : data, [data])
+    const [listElements, isLoading, isError] = useListElements({ id: props.id, type: props.typeCustomers })
     const { listCategories } = useCategory()
 
     const [isOpenComponentAddCategory, setIsOpenComponentAddCategory] = useState(false)

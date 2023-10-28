@@ -136,7 +136,7 @@ export default function FormCustomers(props) {
                         onChange={handleChange}
                         isDisabled={props.type == "view"}
                     />
-                    {dateCustomers.contact_1 && (
+                    {dateCustomers.contact_1 ?
                         <Link
                             className='border-green-500 border-b-2 mx-2 text-green-500'
                             href={`https://wa.me/${dateCustomers.contact_1}`}
@@ -144,7 +144,11 @@ export default function FormCustomers(props) {
                         >
                             Vai su Whatsapp
                         </Link>
-                    )}
+                        :
+                        <span className='border-green-500 border-b-2 mx-2 text-green-500 opacity-50'>
+                            Vai su Whatsapp
+                        </span>
+                    }
                 </div>
                 <div className='w-full'>
                     <Input
@@ -158,14 +162,18 @@ export default function FormCustomers(props) {
                         onChange={handleChange}
                         isDisabled={props.type == "view"}
                     />
-                    {dateCustomers.contact_2 && (
+                    {dateCustomers.contact_2 ?
                         <Link
                             className='border-green-500 border-b-2 mx-2 text-green-500'
                             href={`https://wa.me/${dateCustomers.contact_2}`}
                             target='_blank' >
                             Vai su Whatsapp
                         </Link>
-                    )}
+                        :
+                        <span className='border-green-500 border-b-2 mx-2 text-green-500 opacity-50'>
+                            Vai su Whatsapp
+                        </span>
+                    }
                 </div>
             </div>
             <div className='flex gap-2 flex-row items-center'>
