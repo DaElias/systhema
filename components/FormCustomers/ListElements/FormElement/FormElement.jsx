@@ -11,6 +11,8 @@ const INIT_VALIDATE = { name: false, description: false, category: false, catego
 export default function FormElement(props) {
     const [element, handleChange, resetForm] = useForm(
         {
+            id: props.id, uid: props.uid,
+            customer_id: props.idCustomer, category_id: props.category_id,
             name: props.name, description: props.description,
             state: props.state, Category: props?.Category?.name,
             delivery_description: props.delivery_description
@@ -19,8 +21,6 @@ export default function FormElement(props) {
     const [validate, setValidate] = useState(INIT_VALIDATE)
     const hasCategory = useMemo(() => covertArrayToHas({ key: "name", array: props.listCategories }), [])
 
-    console.log(element)
-    console.log(hasCategory[element.Category]?.id)
     const handleSubmit = () => {
         // validate date felds
         const validateName = typeof element.name == "undefined" || element.name == ""
@@ -46,17 +46,33 @@ export default function FormElement(props) {
         if (validateName || validateDescription || validateCategory)
             return
 
-        if (props.type == "create") {
-            const newElement = {
-                ...element,
-                id: -1,
-                customer_id: -1,
-                category_id: hasCategory[element.Category].id,
-                state: !element.state ? "IN_PROCESS" : element.state,
-                Category: { name: element.Category }
-            }
-            props.handleCreateElement(newElement)
+        // if (props.type == "create") {
+        const newElement = {
+            // ...element,
+            name: element.name,
+            description: element.description,
+            delivery_description: element.delivery_description,
+            id: !element.id ? -1 : element.id,
+            customer_id: !element.customer_id ? -1 : element.customer_id,
+            category_id: hasCategory[element.Category].id,
+            state: !element.state ? "IN_PROCESS" : element.state,
+            Category: { name: element.Category },
+            uid: element.uid ? element.uid : Date.now(),
+            type: props.type
         }
+        props.handleElementsOptions(newElement)
+        // }
+        // if (props.type == "edit") {
+        //     const newElement = {
+        //         ...element,
+        //         id: -1,
+        //         customer_id: -1,
+        //         category_id: hasCategory[element.Category].id,
+        //         state: !element.state ? "IN_PROCESS" : element.state,
+        //         Category: { name: element.Category }
+        //     }
+        //     props.handleCreateElement(newElement)
+        // }
 
         props.handleCancel()
     }
@@ -137,7 +153,7 @@ export default function FormElement(props) {
                     <Button color="primary" variant='ghost' onClick={() => handleSubmit()} >Salvar</Button>
                 )}
                 {props.handleCancel && (
-                    <Button onClick={() => props.handleCancel()} color="danger" variant='ghost'>{props.type == "view" ? "Exit" : "Cancel"}</Button>
+                    <Button onClick={() => props.handleCancel()} color="danger" variant='ghost'>{props.type == "view" ? "Uscita" : "Annulla"}</Button>
                 )}
             </div>
         </div>

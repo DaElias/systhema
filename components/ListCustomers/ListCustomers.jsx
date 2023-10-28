@@ -7,11 +7,7 @@ import { PlusIcon } from "../ui/svg/PlusIcon";
 import { VerticalDotsIcon } from "../ui/svg/VerticalDotsIcon";
 import { SearchIcon } from "../ui/svg/SearchIcon";
 import { ChevronDownIcon } from "../ui/svg/ChevronDownIcon";
-import {
-  columns,
-  constumers,
-  statusOptions
-} from "./mockup";
+// import {columns, constumers, statusOptions} from "./mockup";
 import { capitalize } from "@/lib/utils";
 import ModalComponent from "../ui/ModalComponent";
 import FormCustomers from "../FormCustomers/FormCustomers";
@@ -23,6 +19,28 @@ const statusColorMap = {
   paused: "danger",
   vacation: "warning",
 };
+
+
+const columns = [
+  { name: "Code Fiscale", uid: "fiscale_code" },
+  { name: "Nome", uid: "name", sortable: true },
+  { name: "Cognome", uid: "last_name" },
+  { name: "Indirizzo", uid: "address" },
+  { name: "C.A.P.", uid: "zip_code", sortable: true },
+  { name: "Cittá", uid: "city", sortable: true },
+  { name: "Provice", uid: "provice", sortable: true },
+  { name: "Telefono (1)", uid: "contact_1" },
+  { name: "Telefono (2)", uid: "contact_2" },
+  { name: "Email (1)", uid: "email_1" },
+  { name: "Email (2)", uid: "email_2" },
+  { name: "AZIONI", uid: "actions" },
+];
+
+const statusOptions = [
+  { name: "Active", uid: "active" },
+  { name: "Paused", uid: "paused" },
+  { name: "Vacation", uid: "vacation" },
+];
 
 
 const INITIAL_VISIBLE_COLUMNS = [
@@ -118,11 +136,11 @@ export default function ListCustomers() {
   const titleModalComponent = useMemo(() => {
     const { type } = isOpenComponent
     if (type == "view")
-      return "View Customer"
+      return "Visualizza cliente"
     if (type == "create")
-      return "Create New Customer"
+      return "Creare Nuovi Clienti"
     if (type == "edit")
-      return "Edit Customer"
+      return "Modifica Cliente"
     return ""
   }, [isOpenComponent.type])
 
@@ -171,12 +189,14 @@ export default function ListCustomers() {
               </DropdownTrigger>
               <DropdownMenu>
                 <DropdownItem onClick={() => hadleShowModalComponet({ dataUser: user, type: "view" })} >
-                  View
+                  visualizzazione
                 </DropdownItem>
                 <DropdownItem onClick={() => hadleShowModalComponet({ dataUser: user, type: "edit" })}>
-                  Edit
+                  Modificare
                 </DropdownItem>
-                <DropdownItem>Delete</DropdownItem>
+                <DropdownItem onClick={() => { }}>
+                  Eliminare
+                </DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </div>
@@ -214,7 +234,7 @@ export default function ListCustomers() {
               base: "w-full sm:max-w-[44%]",
               inputWrapper: "border-1 sm:h-12",
             }}
-            placeholder="Search by name..."
+            placeholder="Cerca per nome del cliente..."
             size="sm"
             startContent={<SearchIcon className="text-default-300" />}
             value={filterValue}
@@ -255,7 +275,7 @@ export default function ListCustomers() {
                   size="sm"
                   variant="flat"
                 >
-                  Columns
+                  Colonne
                 </Button>
               </DropdownTrigger>
               <DropdownMenu
@@ -279,14 +299,14 @@ export default function ListCustomers() {
               size="sm"
               onClick={() => hadleShowModalComponet({ type: "create" })}
             >
-              Add New
+              Creare Nuovi Clienti
             </Button>
           </div>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-default-400 text-small">Total {constumers.length} constumers</span>
+          <span className="text-default-400 text-small">Total {constumers.length} clienti</span>
           <label className="flex items-center text-default-400 text-small">
-            Rows per page:
+            Righe per pagina:
             <select
               className="bg-transparent outline-none text-default-400 text-small"
               onChange={onRowsPerPageChange}
@@ -326,8 +346,8 @@ export default function ListCustomers() {
         />
         <span className="text-small text-default-400">
           {selectedKeys === "all"
-            ? "All items selected"
-            : `${selectedKeys.size} of ${items.length} selected`}
+            ? "Tutti gli elementi selezionati"
+            : `${selectedKeys.size} di ${items.length} Selezionati`}
         </span>
       </div>
     );

@@ -11,15 +11,19 @@ export default function FormCategory({ handleCancel, listCategories = [] }) {
 
     const handleSubmit = async (event) => {
         event.preventDefault()
-        if (dataForm.name.length == 0 || !dataForm.description.length == 0)
+        const { name, description } = dataForm
+        if (name.length == 0 || description.length == 0)
             return
+        // console.log(dataForm)
 
-        const respose = await serviceCreateCategory(dataForm)
+        const respose = await serviceCreateCategory({ name, description })
+        // console.log(respose)
         if (respose.status != "create") {
             console.log("create")
         } else {
             console.log("error")
         }
+        handleCancel()
     }
 
 

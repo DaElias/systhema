@@ -21,22 +21,23 @@ const statusColorMap = {
 
 
 const columns = [
-    { name: "NAME", uid: "name" },
-    { name: "CATEGORY", uid: "Category" },
-    { name: "STATUS", uid: "state" },
-    { name: "ACTIONS", uid: "actions" },
+    { name: "NOME", uid: "name" },
+    { name: "CATEGORIA", uid: "Category" },
+    { name: "STATO", uid: "state" },
+    { name: "AZIONI", uid: "actions" },
 ]
 
 
-export default function ListElements({ typeCustomers, listElements, isLoading, handleCreateElement }) {
-    const { listCategories } = useCategory()
+export default function ListElements({ typeCustomers, listElements, isLoading, handleElementsOptions, idCustomer = -1 }) {
+    const { listCategories, updateCategory } = useCategory()
     const [isOpenComponentAddCategory, setIsOpenComponentAddCategory] = useState(false)
     const [isOpenComponentElements, setIsOpenComponentElements] = useState({
         value: false,
         data: { typeCustomers, listElements, isLoading },
         type: typeCustomers
     })
-
+    console.log(listElements)
+    console.log("idCustomer: ", idCustomer)
     const titleModalComponent = useMemo(() => {
         const { type } = isOpenComponentElements
         if (type == "view")
@@ -75,24 +76,25 @@ export default function ListElements({ typeCustomers, listElements, isLoading, h
             case "actions":
                 return (
                     <div className="relative flex items-center gap-2">
-                        <Tooltip content="Details">
+                        <Tooltip content="Dettagli">
                             {/* <span className="text-lg text-default-400 cursor-pointer active:opacity-50" onClick={() => setIsOpenComponentElements(prev => { return { ...prev, value: true } })}> */}
                             <button
                                 className="text-lg text-default-800 cursor-pointer active:opacity-50 disabled:opacity-50" onClick={() => hadleShowModalComponetElement({ type: "view", element })}>
                                 <EyeIcon />
                             </button>
                         </Tooltip>
-                        <Tooltip content="Edit element">
+                        <Tooltip content="Modifica elemento">
                             <button
                                 disabled={isOpenComponentElements.type == "view"}
                                 className="text-lg text-default-800 cursor-pointer active:opacity-50 disabled:opacity-50" onClick={() => hadleShowModalComponetElement({ type: "edit", element })}>
                                 <EditIcon />
                             </button>
                         </Tooltip>
-                        <Tooltip color="danger" content="Delete element">
+                        <Tooltip color="danger" content="Elimina elemento">
                             <button
                                 disabled={isOpenComponentElements.type == "view"}
-                                className="text-lg text-danger cursor-pointer active:opacity-50 disabled:opacity-50">
+                                className="text-lg text-danger cursor-pointer active:opacity-50 disabled:opacity-50"
+                                onClick={() => hadleShowModalComponetElement({ type: "delete", element })}>
                                 <DeleteIcon />
                             </button>
                         </Tooltip>
@@ -118,7 +120,9 @@ export default function ListElements({ typeCustomers, listElements, isLoading, h
                     handleCancel={() => setIsOpenComponentElements(prev => { return { ...prev, value: false, type: typeCustomers } })}
                     listCategories={listCategories}
                     category={isOpenComponentElements?.data?.Category?.name}
-                    handleCreateElement={handleCreateElement}
+                    handleElementsOptions={handleElementsOptions}
+                    idCustomer={idCustomer}
+                    id={isOpenComponentElements.data?.id}
                 />
             </ModalComponent>
 
@@ -132,14 +136,15 @@ export default function ListElements({ typeCustomers, listElements, isLoading, h
                 size={"sm"}
             >
                 <FormCategory
-                    handleCancel={() => setIsOpenComponentAddCategory(false)}
+                    handleCancel={() => { setIsOpenComponentAddCategory(false); updateCategory() }}
                     listCategories={listCategories}
                 />
             </ModalComponent>
 
             <Divider className='mb-2' />
             <div className="flex justify-between items-center">
-                <h3 className='text-md font-extrabold'>List of Elements</h3>
+                {/* <h3 className='text-md font-extrabold'>List of Elements</h3> */}
+                <h3 className='text-md font-extrabold'>Elenco degli articoli</h3>
                 <div className="flex gap-2">
                     <Button
                         className="bg-foreground text-background"
@@ -148,7 +153,7 @@ export default function ListElements({ typeCustomers, listElements, isLoading, h
                         isDisabled={isOpenComponentElements.type == "view"}
                         onClick={() => hadleShowModalComponetElement({ type: "create" })}
                     >
-                        Add New Element
+                        Aggiungi nuovo elemento
                     </Button>
                     <Button
                         className="bg-foreground text-background"
@@ -157,7 +162,7 @@ export default function ListElements({ typeCustomers, listElements, isLoading, h
                         isDisabled={isOpenComponentElements.type == "view"}
                         onClick={() => setIsOpenComponentAddCategory(true)}
                     >
-                        Add New Category
+                        Aggiungi nuova categoria
                     </Button>
                 </div>
             </div>

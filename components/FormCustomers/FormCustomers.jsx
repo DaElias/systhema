@@ -42,16 +42,20 @@ export default function FormCustomers(props) {
     }
 
     // Options Elements
-    const handleCreateElement = (newElement) => {
-        if (props.type == "create") {
-            // console.log(newElement)
-            // setListElement([...listElements, newElement])
+    const handleElementsOptions = (newElement) => {
+        if (newElement.type == "create") {
             setListElement(prev => { return [...prev, newElement] })
-        } else {
+        } else if (newElement.type == "edit") {
+            setListElement(prev => prev.map((element) => {
+                if (element.uid == newElement.uid) {
+                    return newElement
+                }
+                return element
+            }))
+        } else if (newElement.type == "delete") {
 
         }
     }
-console.log(listElements)
 
     const handleCreateCustomers = (dateCustomers) => {
         // we shoud send the date of customers and element
@@ -107,7 +111,7 @@ console.log(listElements)
                     </div>
                     <Textarea
                         name="address"
-                        label="Address"
+                        label="Indirizzo"
                         labelPlacement="outside"
                         placeholder="Enter your address"
                         className=" w-full"
@@ -242,7 +246,7 @@ console.log(listElements)
                 typeCustomers={props.type}
                 listElements={listElements}
                 isLoading={isLoading}
-                handleCreateElement={handleCreateElement}
+                handleElementsOptions={handleElementsOptions}
             />
 
             <div className='flex gap-2 justify-center'>
@@ -250,7 +254,7 @@ console.log(listElements)
                     <Button color="primary" variant='ghost' type='submit' >Salvar</Button>
                 )}
                 {props.handleCancel && (
-                    <Button onClick={() => props.handleCancel()} color="danger" variant='ghost'>{props.type == "view" ? "Exit" : "Cancel"}</Button>
+                    <Button onClick={() => props.handleCancel()} color="danger" variant='ghost'>{props.type == "view" ? "Uscita" : "Annulla"}</Button>
                 )}
             </div>
         </form>

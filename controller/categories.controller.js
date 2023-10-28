@@ -19,7 +19,8 @@ export async function postCreateCategoryController(req, res) {
     try {
         // if (! await validateToken(req))
         // return new NextResponse("unauthorized", { status: 401 })
-        const { name, description } = req.json()
+        const { name, description } = await req.json()
+        // console.log(name, description)
         // console.log(name, description)
         if (!name || !description)
             return new NextResponse("params not found!!", { status: 400 })
