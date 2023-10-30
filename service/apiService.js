@@ -22,6 +22,15 @@ function createRequestoptions(method, body) {
 //     return await sendRequest(`/api/product?user_id=${user_id}&product_id=${product_id}`, options)
 // }
 
+export async function serviceCreateElement(newElement) {
+    const options = createRequestoptions('POST', newElement);
+    return await sendRequest(`/api/elements`, options)
+}
+
+export async function serviceCreateCustomers(newCustomers) {
+    const options = createRequestoptions('POST', newCustomers);
+    return await sendRequest(`/api/customers`, options)
+}
 
 
 export async function serviceCreateCategory(newCategory) {

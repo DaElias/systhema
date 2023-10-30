@@ -15,3 +15,30 @@ export async function getCustomersController(req, res) {
         return new NextResponse(JSON.stringify(error.toString()), { status: 400 })
     }
 }
+export async function postCustomersController(req, res) {
+    try {
+        // if (! await validateToken(req))
+        // return new NextResponse("unauthorized", { status: 401 })
+        const { newLisElements, newCostumers } = await req.json()
+
+        const customer = await prisma.customers.create({ data: { ...newCostumers } })
+        console.log(customer)
+
+        await prisma.element.createMany({
+            data: newLisElements.map(
+                (element) => {
+                    element.customer_id = customer.id
+                    return element
+                }
+            )
+        })
+
+        return new NextResponse(JSON.stringify({ status: 201 }), { status: 201 })
+    } catch (error) {
+        // console.log(error)
+        return new NextResponse(JSON.stringify({ message: error.toString() }), { status: 400 })
+    }
+}
+
+
+

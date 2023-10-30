@@ -16,6 +16,21 @@ export async function getElementController(req, res) {
     }
 }
 
+export async function postElementController(req, res) {
+    try {
+        // if (! await validateToken(req))
+        // return new NextResponse("unauthorized", { status: 401 })
+        const element = await req.json()
+
+        await prisma.element.create({ data: { ...element } })
+
+        return new NextResponse(JSON.stringify({ status: 201 }), { status: 200 })
+    } catch (error) {
+        // console.log(error)
+        return new NextResponse(JSON.stringify({ message: error.toString() }), { status: 400 })
+    }
+}
+
 
 
 export async function getElementByCustomesIdController(req, res) {

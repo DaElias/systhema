@@ -36,8 +36,8 @@ export default function ListElements({ typeCustomers, listElements, isLoading, h
         data: { typeCustomers, listElements, isLoading },
         type: typeCustomers
     })
-    console.log(listElements)
-    console.log("idCustomer: ", idCustomer)
+    // console.log(listElements)
+    // console.log("idCustomer: ", idCustomer)
     const titleModalComponent = useMemo(() => {
         const { type } = isOpenComponentElements
         if (type == "view")
@@ -94,7 +94,9 @@ export default function ListElements({ typeCustomers, listElements, isLoading, h
                             <button
                                 disabled={isOpenComponentElements.type == "view"}
                                 className="text-lg text-danger cursor-pointer active:opacity-50 disabled:opacity-50"
-                                onClick={() => hadleShowModalComponetElement({ type: "delete", element })}>
+                                // onClick={() => hadleShowModalComponetElement({ type: "delete", element })}
+                                onClick={() => handleElementsOptions({ ...element, type: "delete" })}
+                            >
                                 <DeleteIcon />
                             </button>
                         </Tooltip>
@@ -169,25 +171,29 @@ export default function ListElements({ typeCustomers, listElements, isLoading, h
             {isLoading ?
                 <Spinner className="py-5" size="lg" label="Loading..." color="default" labelColor="foreground" />
                 :
-                <Table
-                    shadow="none" >
-                    <TableHeader columns={columns}>
-                        {(column) => (
-                            <TableColumn key={column.uid} align={column.uid === "actions" ? "center" : "start"}>
-                                {column.name}
-                            </TableColumn>
-                        )}
-                    </TableHeader>
-                    <TableBody items={listElements || []}>
-                        {(item, index) => (
-                            <TableRow key={index}>
-                                {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
-                            </TableRow>
-                        )}
-                    </TableBody>
-                </Table>
+                listElements.length == 0 ?
+                    <div className="text-center py-5">
+                        Non ci sono elementi!! 😱
+                    </div>
+                    :
+                    <Table
+                        shadow="none" >
+                        <TableHeader columns={columns}>
+                            {(column) => (
+                                <TableColumn key={column.uid} align={column.uid === "actions" ? "center" : "start"}>
+                                    {column.name}
+                                </TableColumn>
+                            )}
+                        </TableHeader>
+                        <TableBody items={listElements}>
+                            {(item, index) => (
+                                <TableRow key={index}>
+                                    {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
+                                </TableRow>
+                            )}
+                        </TableBody>
+                    </Table>
             }
-
         </>
     )
 }

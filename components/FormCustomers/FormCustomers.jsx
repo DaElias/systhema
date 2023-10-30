@@ -7,6 +7,8 @@ import { Button, Divider, Input, Select, SelectItem, Textarea } from '@nextui-or
 import { MailIcon } from '../ui/svg/MailIcon';
 import { HAS_PROVINCE } from '@/lib/utils';
 import Link from 'next/link';
+import { serviceCreateCustomers, serviceCreateElement } from '@/service/apiService';
+import useValidateFelds from '@/hooks/useValidateFelds';
 
 
 export default function FormCustomers(props) {
@@ -24,14 +26,35 @@ export default function FormCustomers(props) {
         zip_code: props.zip_code,
         fiscale_code: props.fiscale_code
     })
+    const [validateCustomers, handleValidations] = useValidateFelds({
+        name: false,
+        last_name: false,
+        address: false,
+        contact_1: false,
+        email_1: false,
+        provice: false,
+        city: false,
+        zip_code: false,
+    }, dateCustomers)
     const [listElements, isLoading, isError, setListElement] = useListElements({ id: props.id, type: props.type })
 
-    const [validate, setValidate] = useState({ name: "t" })
 
     const handleSubmit = (event) => {
         event.preventDefault()
-        // const dataForm = Object.fromEntries(new window.FormData(e.target))
-        // console.log(dataForm)
+        // validate feltds
+        const validateName = handleValidations("name")
+        const validateLast_name = handleValidations("last_name")
+        const validateAddress = handleValidations("address")
+        const validateZip_code = handleValidations("zip_code")
+        const validateCity = handleValidations("city")
+        const validateProvice = handleValidations("provice")
+        const validateContact_1 = handleValidations("contact_1")
+        const validateEmail_1 = handleValidations("email_1")
+
+        if (validateName || validateLast_name || validateAddress || validateZip_code || validateCity ||
+            validateProvice || validateContact_1 || validateEmail_1)
+            return
+
         if (props.type == "create") {
             handleCreateCustomers()
             return
@@ -42,8 +65,21 @@ export default function FormCustomers(props) {
     }
 
     // Options Elements
-    const handleElementsOptions = (newElement) => {
+    const handleElementsOptions = async (newElement) => {
+        // console.log(newElement)
         if (newElement.type == "create") {
+            if (newElement.customer_id != -1) {
+                const isCreateElement = await handleCreateElement({
+                    name: newElement.name,
+                    category_id: newElement.category_id,
+                    description: newElement.description,
+                    state: newElement.state,
+                    customer_id: newElement.customer_id,
+                    delivery_description: newElement.delivery_descriptio
+                })
+                if (!isCreateElement)
+                    return
+            }
             setListElement(prev => { return [...prev, newElement] })
         } else if (newElement.type == "edit") {
             setListElement(prev => prev.map((element) => {
@@ -57,9 +93,41 @@ export default function FormCustomers(props) {
         }
     }
 
-    const handleCreateCustomers = (dateCustomers) => {
+    const handleCreateCustomers = async () => {
         // we shoud send the date of customers and element
-        console.log(dateCustomers)
+        const newLisElements = listElements.map((element) => {
+            return {
+                name: element.name,
+                description: element.description,
+                delivery_description: element.delivery_description,
+                state: element.state,
+                category_id: element.category_id
+            }
+        })
+        const newCostumers = {}
+        for (let key in dateCustomers) {
+            let element = dateCustomers[key]
+            if (element)
+                newCostumers[key] = element
+        }
+        const response = await serviceCreateCustomers({ newLisElements, newCostumers })
+        if (response.status == 201) {
+            props.handleUpdate()
+            props.handleCancel()
+        } else {
+            console.log(response)
+        }
+    }
+
+    const handleCreateElement = async (element) => {
+        const newElement = {}
+        for (let key in element) {
+            let item = element[key]
+            if (item)
+                newElement[key] = item
+        }
+        const response = await serviceCreateElement(newElement)
+        return response.status == 201
     }
 
     const handleEditCutomers = () => { }
@@ -90,13 +158,12 @@ export default function FormCustomers(props) {
                             label="Nome"
                             labelPlacement="outside"
                             placeholder="..."
-                            // isInvalid={true}
-                            // errorMessage="Please enter a valid email"
+                            isInvalid={validateCustomers.name}
+                            errorMessage={validateCustomers.name && "Il nome del campo è obbligatorio!!"}
                             value={dateCustomers.name}
                             name='name'
                             onChange={handleChange}
                             isDisabled={props.type == "view"}
-
                         />
                         <Input
                             label="Cognome"
@@ -106,7 +173,8 @@ export default function FormCustomers(props) {
                             name='last_name'
                             onChange={handleChange}
                             isDisabled={props.type == "view"}
-
+                            isInvalid={validateCustomers.last_name}
+                            errorMessage={validateCustomers.last_name && "Il cognome del campo è obbligatorio!!"}
                         />
                     </div>
                     <Textarea
@@ -118,7 +186,8 @@ export default function FormCustomers(props) {
                         value={dateCustomers.address}
                         onChange={handleChange}
                         isDisabled={props.type == "view"}
-
+                        isInvalid={validateCustomers.address}
+                        errorMessage={validateCustomers.address && "Il indirizzo del campo è obbligatorio!!"}
                     />
                 </div>
                 <div className='flex gap-2 flex-row items-center'>
@@ -129,7 +198,8 @@ export default function FormCustomers(props) {
                         name='zip_code'
                         onChange={handleChange}
                         isDisabled={props.type == "view"}
-
+                        isInvalid={validateCustomers.zip_code}
+                        errorMessage={validateCustomers.zip_code && "Il C.A.P. del campo è obbligatorio!!"}
                     />
                     <Input
                         label="Cittá"
@@ -138,6 +208,8 @@ export default function FormCustomers(props) {
                         name='city'
                         onChange={handleChange}
                         isDisabled={props.type == "view"}
+                        isInvalid={validateCustomers.city}
+                        errorMessage={validateCustomers.city && "Il cittá del campo è obbligatorio!!"}
                     />
                     <Select
                         label="Provice"
@@ -146,6 +218,8 @@ export default function FormCustomers(props) {
                         defaultSelectedKeys={[dateCustomers.provice]}
                         isDisabled={props.type == "view"}
                         onChange={handleChange}
+                        isInvalid={validateCustomers.provice}
+                        errorMessage={validateCustomers.provice && "Il provice del campo è obbligatorio!!"}
                     >
                         {
                             // props.type != "view" &&
@@ -169,6 +243,9 @@ export default function FormCustomers(props) {
                             name='contact_1'
                             onChange={handleChange}
                             isDisabled={props.type == "view"}
+                            isInvalid={validateCustomers.contact_1}
+                            errorMessage={validateCustomers.contact_1 && "Il telefono del campo è obbligatorio!!"}
+
                         />
                         {dateCustomers.contact_1 ?
                             <Link
@@ -223,6 +300,9 @@ export default function FormCustomers(props) {
                         name='email_1'
                         onChange={handleChange}
                         isDisabled={props.type == "view"}
+                        isInvalid={validateCustomers.email_1}
+                        errorMessage={validateCustomers.email_1 && "Il email del campo è obbligatorio!!"}
+
                     />
                     <Input
                         type="email"

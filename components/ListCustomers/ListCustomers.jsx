@@ -63,7 +63,7 @@ const INITIAL_ROWS_PER_PAGE = 10
 const INITIAL_STATE_IS_OPEN = { value: false, data: {}, type: "view" }
 export default function ListCustomers() {
   // get Data
-  const [data = [], isLoading, error] = useFetch("/api/customers")
+  const [data = [], isLoading, error, update] = useFetch("/api/customers")
   const constumers = useMemo(() => !data?.length ? [] : data, [data])
   // Modal
   const [isOpenComponent, setIsOpenComponent] = useState(INITIAL_STATE_IS_OPEN)
@@ -386,6 +386,7 @@ export default function ListCustomers() {
           {...isOpenComponent.data}
           handleCancel={() => setIsOpenComponent(INITIAL_STATE_IS_OPEN)}
           type={isOpenComponent.type}
+          handleUpdate={() => update()}
         />
       </ModalComponent>
       <Table
