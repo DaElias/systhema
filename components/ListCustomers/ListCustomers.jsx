@@ -15,6 +15,7 @@ import useFetch from "@/hooks/useFetch";
 import Image from "next/image";
 import LOGO from "/public/logo.png"
 import { signOut } from "next-auth/react";
+import { serviceDeleteCustomer } from "@/service/apiService";
 const statusColorMap = {
   active: "success",
   paused: "danger",
@@ -130,8 +131,10 @@ export default function ListCustomers() {
       data: dataUser, value: true, type
     })
 
-  const handleDeleteCustomers = (id) => {
-
+  const handleDeleteCustomers = async (id) => {
+    const response = await serviceDeleteCustomer(id)
+    if (response.status == 200)
+      update()
   }
 
   const titleModalComponent = useMemo(() => {
@@ -195,7 +198,7 @@ export default function ListCustomers() {
                 <DropdownItem onClick={() => hadleShowModalComponet({ dataUser: user, type: "edit" })}>
                   Modificare
                 </DropdownItem>
-                <DropdownItem onClick={() => { }}>
+                <DropdownItem onClick={() => handleDeleteCustomers(user.id)}>
                   Eliminare
                 </DropdownItem>
               </DropdownMenu>

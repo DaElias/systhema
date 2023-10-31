@@ -1,4 +1,5 @@
 "use client"
+import { useState } from 'react';
 import useForm from '@/hooks/useForm';
 import useListElements from '@/hooks/getsHooks/useListElements';
 import ListElements from './ListElements/ListElements';
@@ -6,8 +7,8 @@ import { Button, Divider, Input, Select, SelectItem, Textarea } from '@nextui-or
 import { MailIcon } from '../ui/svg/MailIcon';
 import { HAS_PROVINCE, clearObject } from '@/lib/utils';
 import Link from 'next/link';
-import { serviceCreateCustomers, serviceCreateElement, serviceEditCustomer, serviceEditElement } from '@/service/apiService';
 import useValidateFelds from '@/hooks/useValidateFelds';
+import { serviceCreateCustomers, serviceCreateElement, serviceDeleteElement, serviceEditCustomer, serviceEditElement } from '@/service/apiService';
 
 
 export default function FormCustomers(props) {
@@ -35,8 +36,9 @@ export default function FormCustomers(props) {
         city: false,
         zip_code: false,
     }, dateCustomers)
-    const [listElements, isLoading, isError, setListElement] = useListElements({ id: props.id, type: props.type })
-
+    const [listElements, isLoading, isError,
+        setListElement, updateListElements] = useListElements({ id: props.id, type: props.type })
+    const [isLoadingForm, setIsLoadingForm] = useState(false)
 
     const handleSubmit = (event = null) => {
         // event.preventDefault()
@@ -66,14 +68,18 @@ export default function FormCustomers(props) {
 
     // Options Elements
     const handleElementsOptions = async (newElement) => {
-        // console.log(newElement)
         if (newElement.type == "create") {
             if (newElement.customer_id != -1) {
                 const isCreateElement = await handleCreateElement(newElement)
                 if (!isCreateElement)
                     return
+                updateListElements()
+            } else {
+                const newListElement = listElements
+                newElement.uid = Date.now()
+                newListElement.push(newElement)
+                setListElement(newListElement)
             }
-            setListElement(prev => { return [...prev, newElement] })
         } else if (newElement.type == "edit") {
             let key = "uid"
             if (newElement.id != -1) {
@@ -90,7 +96,21 @@ export default function FormCustomers(props) {
                 return element
             }))
         } else if (newElement.type == "delete") {
-
+            setIsLoadingForm(true)
+            if (newElement.id != -1) {
+                const response = await serviceDeleteElement(newElement.id)
+                if (response.status != 200) {
+                    setIsLoadingForm(false)
+                    return
+                }
+                updateListElements()
+            } else {
+                // console.log(newElement)
+                // console.log(listElements)
+                // return
+                setListElement( prev => prev.filter(item => item.uid != newElement.uid))
+            }
+            setIsLoadingForm(false)
         }
     }
 
@@ -129,6 +149,7 @@ export default function FormCustomers(props) {
 
 
     const handleCreateElement = async (element) => {
+        setIsLoadingForm(true)
         const newElement = clearObject({
             name: element.name,
             description: element.description,
@@ -138,10 +159,12 @@ export default function FormCustomers(props) {
             customer_id: element.customer_id
         })
         const response = await serviceCreateElement(newElement)
+        setIsLoadingForm(false)
         return response.status == 201
     }
 
     const handleEditElement = async (element) => {
+        setIsLoadingForm(true)
         const newElement = clearObject({
             id: element.id,
             name: element.name,
@@ -152,13 +175,14 @@ export default function FormCustomers(props) {
             customer_id: element.customer_id
         })
         const response = await serviceEditElement(newElement)
+        setIsLoadingForm(false)
         return response.status == 200
     }
 
 
     return (
         <div
-            className='flex flex-col gap-4 w-full pb-2'
+            className={`flex flex-col gap-4 w-full pb-2 ${isLoadingForm && 'cursor-wait'} `}
         // onSubmit={handleSubmit}
         >
             <h3 className='text-md font-extrabold'>Costumer Information</h3>

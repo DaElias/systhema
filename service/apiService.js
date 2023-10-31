@@ -24,6 +24,10 @@ export async function serviceCreateElement(newElement) {
     const options = createRequestoptions('POST', newElement);
     return await sendRequest(`/api/elements`, options)
 }
+export async function serviceDeleteElement(id) {
+    const options = createRequestoptions('DELETE', { id });
+    return await sendRequest(`/api/elements`, options)
+}
 
 // * Customers
 export async function serviceCreateCustomers(newCustomers) {
@@ -34,13 +38,16 @@ export async function serviceEditCustomer(customer) {
     const options = createRequestoptions('PUT', customer);
     return await sendRequest(`/api/customers`, options)
 }
+export async function serviceDeleteCustomer(id) {
+    const options = createRequestoptions('DELETE', { id });
+    return await sendRequest(`/api/customers`, options)
+}
 
 //  * Category
 export async function serviceCreateCategory(newCategory) {
     const options = createRequestoptions('POST', newCategory);
     return await sendRequest(`/api/categories`, options)
 }
-
 
 // * Users
 export async function serviceCreateUser(newUser) {

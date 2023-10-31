@@ -57,6 +57,25 @@ export async function putCustomersController(req, res) {
         return new NextResponse(JSON.stringify({ message: error.toString() }), { status: 400 })
     }
 }
+export async function deleteCustomersController(req, res) {
+    try {
+        if (! await validateToken(req, true))
+            return new NextResponse("unauthorized", { status: 401 })
+
+        const { id } = await req.json()
+
+        if (!id || id == -1)
+            throw Error('customer id not found!!')
+
+        await prisma.element.deleteMany({ where: { customer_id: parseInt(id) } })
+        await prisma.customers.deleteMany({ where: { id: parseInt(id) } })
+
+        return new NextResponse(JSON.stringify({ status: 200 }), { status: 201 })
+    } catch (error) {
+        // console.log(error)
+        return new NextResponse(JSON.stringify({ message: error.toString() }), { status: 400 })
+    }
+}
 
 
 

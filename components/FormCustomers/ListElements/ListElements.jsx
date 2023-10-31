@@ -94,8 +94,7 @@ export default function ListElements({ typeCustomers, listElements, isLoading, h
                             <button
                                 disabled={isOpenComponentElements.type == "view"}
                                 className="text-lg text-danger cursor-pointer active:opacity-50 disabled:opacity-50"
-                                // onClick={() => hadleShowModalComponetElement({ type: "delete", element })}
-                                onClick={() => handleElementsOptions({ ...element, type: "delete" })}
+                                onClick={() => handleElementsOptions({ id: element.id, uid: element.uid, type: "delete" })}
                             >
                                 <DeleteIcon />
                             </button>
@@ -168,7 +167,7 @@ export default function ListElements({ typeCustomers, listElements, isLoading, h
                 </div>
             </div>
             {isLoading ?
-                <Spinner className="py-5" size="lg" label="Loading..." color="default" labelColor="foreground" />
+                <Spinner className="py-5" size="lg" label="Caricamento..." color="default" labelColor="foreground" />
                 :
                 listElements.length == 0 ?
                     <div className="text-center py-5">

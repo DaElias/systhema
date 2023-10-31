@@ -70,3 +70,18 @@ export async function getElementByCustomesIdController(req, res) {
         return new NextResponse(JSON.stringify(error.toString()), { status: 400 })
     }
 }
+export async function deleteElementController(req, res) {
+    try {
+        if (! await validateToken(req, true))
+            return new NextResponse("unauthorized", { status: 401 })
+
+        const { id } = await req.json()
+        if (!id)
+            throw Error('id element not found')
+        await prisma.element.delete({ where: { id: parseInt(id) } })
+        return new NextResponse(JSON.stringify({ status: 200 }), { status: 200 })
+    } catch (error) {
+        // console.log(error)
+        return new NextResponse(JSON.stringify(error.toString()), { status: 400 })
+    }
+}
