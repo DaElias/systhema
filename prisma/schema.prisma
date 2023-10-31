@@ -27,7 +27,7 @@ enum Role {
 }
 
 model Customers {
-    id        Int    @id @default(autoincrement())
+    id        Int     @id @default(autoincrement())
     name      String
     last_name String
     address   String?

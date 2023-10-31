@@ -1,12 +1,12 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/util/database";
-// import { validateToken } from "@/util/jwt";
+import { validateToken } from "@/service/jwt.validate";
 
 
 export async function getCategoriesController(req, res) {
     try {
-        // if (! await validateToken(req))
-        // return new NextResponse("unauthorized", { status: 401 })
+        if (! await validateToken(req, true))
+            return new NextResponse("unauthorized", { status: 401 })
         const categories = await prisma.category.findMany()
 
         return new NextResponse(JSON.stringify(categories), { status: 200 })
@@ -17,8 +17,8 @@ export async function getCategoriesController(req, res) {
 }
 export async function postCreateCategoryController(req, res) {
     try {
-        // if (! await validateToken(req))
-        // return new NextResponse("unauthorized", { status: 401 })
+        if (! await validateToken(req, true))
+            return new NextResponse("unauthorized", { status: 401 })
         const { name, description } = await req.json()
         // console.log(name, description)
         // console.log(name, description)

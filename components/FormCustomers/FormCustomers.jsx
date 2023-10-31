@@ -5,9 +5,9 @@ import useListElements from '@/hooks/getsHooks/useListElements';
 import ListElements from './ListElements/ListElements';
 import { Button, Divider, Input, Select, SelectItem, Textarea } from '@nextui-org/react';
 import { MailIcon } from '../ui/svg/MailIcon';
-import { HAS_PROVINCE } from '@/lib/utils';
+import { HAS_PROVINCE, clearObject } from '@/lib/utils';
 import Link from 'next/link';
-import { serviceCreateCustomers, serviceCreateElement } from '@/service/apiService';
+import { serviceCreateCustomers, serviceCreateElement, serviceEditCustomer, serviceEditElement } from '@/service/apiService';
 import useValidateFelds from '@/hooks/useValidateFelds';
 
 
@@ -60,7 +60,8 @@ export default function FormCustomers(props) {
             return
         }
         if (props.type == "edit") {
-
+            handleEditCutomers()
+            return
         }
     }
 
@@ -69,21 +70,22 @@ export default function FormCustomers(props) {
         // console.log(newElement)
         if (newElement.type == "create") {
             if (newElement.customer_id != -1) {
-                const isCreateElement = await handleCreateElement({
-                    name: newElement.name,
-                    category_id: newElement.category_id,
-                    description: newElement.description,
-                    state: newElement.state,
-                    customer_id: newElement.customer_id,
-                    delivery_description: newElement.delivery_descriptio
-                })
+                const isCreateElement = await handleCreateElement(newElement)
                 if (!isCreateElement)
                     return
             }
             setListElement(prev => { return [...prev, newElement] })
         } else if (newElement.type == "edit") {
+            let key = "uid"
+            if (newElement.id != -1) {
+                key = "id"
+                const isEditElement = await handleEditElement(newElement)
+                if (!isEditElement) {
+                    return
+                }
+            }
             setListElement(prev => prev.map((element) => {
-                if (element.uid == newElement.uid) {
+                if (element[key] == newElement[key]) {
                     return newElement
                 }
                 return element
@@ -104,12 +106,8 @@ export default function FormCustomers(props) {
                 category_id: element.category_id
             }
         })
-        const newCostumers = {}
-        for (let key in dateCustomers) {
-            let element = dateCustomers[key]
-            if (element)
-                newCostumers[key] = element
-        }
+        const newCostumers = clearObject(dateCustomers)
+
         const response = await serviceCreateCustomers({ newLisElements, newCostumers })
         if (response.status == 201) {
             props.handleUpdate()
@@ -119,18 +117,45 @@ export default function FormCustomers(props) {
         }
     }
 
-    const handleCreateElement = async (element) => {
-        const newElement = {}
-        for (let key in element) {
-            let item = element[key]
-            if (item)
-                newElement[key] = item
+    const handleEditCutomers = async () => {
+        const costumer = clearObject(dateCustomers)
+        const response = await serviceEditCustomer(costumer)
+        if (response.status == 200) {
+            props.handleUpdate()
+            props.handleCancel()
+        } else {
+            console.log(response)
         }
+    }
+
+
+    const handleCreateElement = async (element) => {
+        const newElement = clearObject({
+            name: element.name,
+            description: element.description,
+            delivery_description: element.delivery_description,
+            state: element.state,
+            category_id: element.category_id,
+            customer_id: element.customer_id
+        })
         const response = await serviceCreateElement(newElement)
         return response.status == 201
     }
 
-    const handleEditCutomers = () => { }
+    const handleEditElement = async (element) => {
+        const newElement = clearObject({
+            id: element.id,
+            name: element.name,
+            description: element.description,
+            delivery_description: element.delivery_description,
+            state: element.state,
+            category_id: element.category_id,
+            customer_id: element.customer_id
+        })
+        const response = await serviceEditElement(newElement)
+        return response.status == 200
+    }
+
 
     return (
         <form

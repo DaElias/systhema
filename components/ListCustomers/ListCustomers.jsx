@@ -14,6 +14,7 @@ import FormCustomers from "../FormCustomers/FormCustomers";
 import useFetch from "@/hooks/useFetch";
 import Image from "next/image";
 import LOGO from "/public/logo.png"
+import { signOut } from "next-auth/react";
 const statusColorMap = {
   active: "success",
   paused: "danger",
@@ -224,9 +225,13 @@ export default function ListCustomers() {
   const topContent = useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
-        <Image src={LOGO} alt="logo" />
+        <div className="flex justify-between items-center">
+          <Image src={LOGO} alt="logo" />
+          <Button onClick={signOut} className="mb-4 px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-300">Cancella la sottoscrizione</Button>
+        </div>
         <Divider className='' />
         {/* <h1>Form Customers</h1> */}
+
         <div className="flex justify-between gap-3 items-end">
           <Input
             isClearable

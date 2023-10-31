@@ -41,11 +41,11 @@ export default function ListElements({ typeCustomers, listElements, isLoading, h
     const titleModalComponent = useMemo(() => {
         const { type } = isOpenComponentElements
         if (type == "view")
-            return "View Element"
+            return "Visualizza elemento"
         if (type == "create")
-            return "Create New Element"
+            return "Crea nuovo elemento"
         if (type == "edit")
-            return "Edit Element"
+            return "Modifica elemento"
         return ""
     }, [isOpenComponentElements.type])
 
