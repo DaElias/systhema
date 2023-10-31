@@ -1,5 +1,4 @@
 "use client"
-import { useState } from 'react';
 import useForm from '@/hooks/useForm';
 import useListElements from '@/hooks/getsHooks/useListElements';
 import ListElements from './ListElements/ListElements';
@@ -39,8 +38,8 @@ export default function FormCustomers(props) {
     const [listElements, isLoading, isError, setListElement] = useListElements({ id: props.id, type: props.type })
 
 
-    const handleSubmit = (event) => {
-        event.preventDefault()
+    const handleSubmit = (event = null) => {
+        // event.preventDefault()
         // validate feltds
         const validateName = handleValidations("name")
         const validateLast_name = handleValidations("last_name")
@@ -158,9 +157,9 @@ export default function FormCustomers(props) {
 
 
     return (
-        <form
+        <div
             className='flex flex-col gap-4 w-full pb-2'
-            onSubmit={handleSubmit}
+        // onSubmit={handleSubmit}
         >
             <h3 className='text-md font-extrabold'>Costumer Information</h3>
             {/* Form Customers */}
@@ -356,12 +355,17 @@ export default function FormCustomers(props) {
 
             <div className='flex gap-2 justify-center'>
                 {props.type != "view" && (
-                    <Button color="primary" variant='ghost' type='submit' >Salvar</Button>
+                    <Button
+                        color="primary"
+                        variant='ghost'
+                        type='submit'
+                        onClick={() => handleSubmit()}
+                    >Salvar</Button>
                 )}
                 {props.handleCancel && (
                     <Button onClick={() => props.handleCancel()} color="danger" variant='ghost'>{props.type == "view" ? "Uscita" : "Annulla"}</Button>
                 )}
             </div>
-        </form>
+        </div>
     )
 }

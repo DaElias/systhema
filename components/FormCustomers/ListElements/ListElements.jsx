@@ -106,11 +106,12 @@ export default function ListElements({ typeCustomers, listElements, isLoading, h
                 return cellValue
         }
     }, [])
+
     return (
         <>
             {/* Component of Elements */}
             <ModalComponent
-                isDismissable={isOpenComponentElements.type == "view"}
+                // isDismissable={isOpenComponentElements.type == "view"}
                 isOpen={isOpenComponentElements.value}
                 onClose={() => setIsOpenComponentElements(prev => { return { ...prev, value: false, type: typeCustomers } })}
                 title={titleModalComponent}
@@ -127,7 +128,6 @@ export default function ListElements({ typeCustomers, listElements, isLoading, h
                     id={isOpenComponentElements.data?.id}
                 />
             </ModalComponent>
-
             {/* Create Category */}
             <ModalComponent
                 // isDismissable={isOpenComponentElements.type == "view"}
@@ -142,7 +142,6 @@ export default function ListElements({ typeCustomers, listElements, isLoading, h
                     listCategories={listCategories}
                 />
             </ModalComponent>
-
             <Divider className='mb-2' />
             <div className="flex justify-between items-center">
                 {/* <h3 className='text-md font-extrabold'>List of Elements</h3> */}

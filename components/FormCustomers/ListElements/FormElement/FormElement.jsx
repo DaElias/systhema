@@ -9,7 +9,7 @@ import { useMemo, useState } from "react";
 const INIT_VALIDATE = { name: false, description: false, category: false, category: false }
 
 export default function FormElement(props) {
-    const [element, handleChange, resetForm] = useForm(
+    const [element, handleChange] = useForm(
         {
             id: props.id, uid: props.uid,
             customer_id: props.idCustomer, category_id: props.category_id,
@@ -139,7 +139,6 @@ export default function FormElement(props) {
                 onChange={handleChange}
             >
                 {
-                    // props.type != "view" &&
                     ["READY", "IN_PROCESS", "WAITING", "HAS_NO_REPAIR"].map((item) => (
                         <SelectItem key={item} value={item}>
                             {TRADUCTION_ITALY[item]}

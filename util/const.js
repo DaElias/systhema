@@ -1,5 +1,6 @@
 export const {
-    NEXTAUTH_SECRET
+    NEXTAUTH_SECRET,
+    NODE_ENV
 } = process.env
 
 export const SESSION_UNAUTHENTICATED = "unauthenticated"
