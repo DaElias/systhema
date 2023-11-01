@@ -19,10 +19,3 @@ export function isValidPassword(value, param = 6) {
 export function isEmpty(value) {
   return value.trim().length != 0;
 }
-
-
-export async function isUserAdmin(req) {
-  console.log(JSON.stringify(req))
-  // const user = await prisma.user.findUnique({ where: { id }, select: { role: true } })
-
-}

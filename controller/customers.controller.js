@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/util/database";
 import { validateToken } from "@/service/jwt.validate";
-import { isUserAdmin } from "@/service/validation.server";
 
 
 export async function getCustomersController(req, res) {
@@ -23,7 +22,6 @@ export async function postCustomersController(req, res) {
             return new NextResponse("unauthorized", { status: 401 })
 
         const { newLisElements, newCostumers } = await req.json()
-        console.log(newLisElements, newCostumers)
         const customer = await prisma.customers.create({ data: { ...newCostumers } })
         // console.log(customer)
         await prisma.element.createMany({
