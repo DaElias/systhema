@@ -10,6 +10,7 @@ import { EditIcon } from "@/components/ui/svg/EditIcon"
 import { DeleteIcon } from "@/components/ui/svg/DeleteIcon"
 import { TRADUCTION_ITALY } from "@/lib/utils"
 import { PlusIcon } from "@/components/ui/svg/PlusIcon"
+import PrintIcon from "@/components/ui/svg/PrintIcon"
 // import { elements } from "./mockup"
 
 const statusColorMap = {
@@ -28,7 +29,7 @@ const columns = [
 ]
 
 
-export default function ListElements({ typeCustomers, listElements, isLoading, handleElementsOptions, idCustomer = -1 }) {
+export default function ListElements({ typeCustomers, listElements, isLoading, handleElementsOptions, idCustomer = -1, handlePrintBillElement }) {
     const { listCategories, updateCategory } = useCategory()
     const [isOpenComponentAddCategory, setIsOpenComponentAddCategory] = useState(false)
     const [isOpenComponentElements, setIsOpenComponentElements] = useState({
@@ -88,6 +89,17 @@ export default function ListElements({ typeCustomers, listElements, isLoading, h
                                 disabled={isOpenComponentElements.type == "view"}
                                 className="text-lg text-default-800 cursor-pointer active:opacity-50 disabled:opacity-50" onClick={() => hadleShowModalComponetElement({ type: "edit", element })}>
                                 <EditIcon />
+                            </button>
+                        </Tooltip>
+                        <Tooltip content="Stampa">
+                            <button
+                                disabled={isOpenComponentElements.type == "create"}
+                                className="text-lg text-danger cursor-pointer active:opacity-50 disabled:opacity-50"
+                                onClick={() => handlePrintBillElement(
+                                    { id: element.id, name: element.name, value: element.value, createdAt: element.createdAt, delivery_description: element.delivery_description }
+                                )}
+                            >
+                                <PrintIcon height={15} width={15} />
                             </button>
                         </Tooltip>
                         <Tooltip color="danger" content="Elimina elemento">

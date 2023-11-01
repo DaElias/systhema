@@ -9,6 +9,7 @@ import { HAS_PROVINCE, clearObject } from '@/lib/utils';
 import Link from 'next/link';
 import useValidateFelds from '@/hooks/useValidateFelds';
 import { serviceCreateCustomers, serviceCreateElement, serviceDeleteElement, serviceEditCustomer, serviceEditElement } from '@/service/apiService';
+import handlePrintTicket from '@/lib/PrintPDF/handlePrintTicket';
 
 
 export default function FormCustomers(props) {
@@ -178,6 +179,16 @@ export default function FormCustomers(props) {
         setIsLoadingForm(false)
         return response.status == 200
     }
+
+    const handlePrintBillElement = (element) =>
+        handlePrintTicket({
+            elementName: element.name,
+            customersName: dateCustomers.name,
+            delivery_description: element.delivery_description,
+            createdAt: element.createdAt,
+            id: element.id,
+            value: element.value
+        })
 
 
     return (
@@ -375,6 +386,7 @@ export default function FormCustomers(props) {
                 listElements={listElements}
                 isLoading={isLoading}
                 handleElementsOptions={handleElementsOptions}
+                handlePrintBillElement={handlePrintBillElement}
             />
 
             <div className='flex gap-2 justify-center'>

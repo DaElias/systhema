@@ -60,7 +60,7 @@ export async function getElementByCustomesIdController(req, res) {
             select: {
                 Category: { select: { name: true } },
                 name: true, id: true, description: true, state: true,
-                delivery_description: true, value: true
+                delivery_description: true, value: true, createdAt: true
             }
         })
 
