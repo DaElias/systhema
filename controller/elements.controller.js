@@ -22,7 +22,7 @@ export async function postElementController(req, res) {
             return new NextResponse("unauthorized", { status: 401 })
         const element = await req.json()
 
-        await prisma.element.create({ data: { ...element } })
+        await prisma.element.create({ data: { ...element, value: parseFloat(element.value) } })
 
         return new NextResponse(JSON.stringify({ status: 201 }), { status: 200 })
     } catch (error) {
@@ -60,7 +60,7 @@ export async function getElementByCustomesIdController(req, res) {
             select: {
                 Category: { select: { name: true } },
                 name: true, id: true, description: true, state: true,
-                delivery_description: true
+                delivery_description: true, value: true
             }
         })
 

@@ -110,7 +110,7 @@ export default function ListElements({ typeCustomers, listElements, isLoading, h
         <>
             {/* Component of Elements */}
             <ModalComponent
-                // isDismissable={isOpenComponentElements.type == "view"}
+                isDismissable={isOpenComponentElements.type == "view"}
                 isOpen={isOpenComponentElements.value}
                 onClose={() => setIsOpenComponentElements(prev => { return { ...prev, value: false, type: typeCustomers } })}
                 title={titleModalComponent}
@@ -129,11 +129,9 @@ export default function ListElements({ typeCustomers, listElements, isLoading, h
             </ModalComponent>
             {/* Create Category */}
             <ModalComponent
-                // isDismissable={isOpenComponentElements.type == "view"}
                 isOpen={isOpenComponentAddCategory}
                 onClose={() => setIsOpenComponentAddCategory(false)}
                 title={"Create a new Category"}
-                // size="md"
                 size={"sm"}
             >
                 <FormCategory
@@ -143,7 +141,6 @@ export default function ListElements({ typeCustomers, listElements, isLoading, h
             </ModalComponent>
             <Divider className='mb-2' />
             <div className="flex justify-between items-center">
-                {/* <h3 className='text-md font-extrabold'>List of Elements</h3> */}
                 <h3 className='text-md font-extrabold'>Elenco degli articoli</h3>
                 <div className="flex gap-2">
                     <Button

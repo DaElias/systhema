@@ -58,6 +58,7 @@ model Element {
     state     State     @default(IN_PROCESS)
     updatedAt DateTime? @default(now()) @updatedAt
     createdAt DateTime? @default(now())
+    value     Float?    @default(0)
 
     Customers   Customers? @relation(fields: [customer_id], references: [id])
     customer_id Int?

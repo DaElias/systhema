@@ -105,10 +105,7 @@ export default function FormCustomers(props) {
                 }
                 updateListElements()
             } else {
-                // console.log(newElement)
-                // console.log(listElements)
-                // return
-                setListElement( prev => prev.filter(item => item.uid != newElement.uid))
+                setListElement(prev => prev.filter(item => item.uid != newElement.uid))
             }
             setIsLoadingForm(false)
         }
@@ -122,7 +119,8 @@ export default function FormCustomers(props) {
                 description: element.description,
                 delivery_description: element.delivery_description,
                 state: element.state,
-                category_id: element.category_id
+                category_id: element.category_id,
+                value: element.value
             }
         })
         const newCostumers = clearObject(dateCustomers)
@@ -156,7 +154,8 @@ export default function FormCustomers(props) {
             delivery_description: element.delivery_description,
             state: element.state,
             category_id: element.category_id,
-            customer_id: element.customer_id
+            customer_id: element.customer_id,
+            value: element.value
         })
         const response = await serviceCreateElement(newElement)
         setIsLoadingForm(false)
@@ -172,7 +171,8 @@ export default function FormCustomers(props) {
             delivery_description: element.delivery_description,
             state: element.state,
             category_id: element.category_id,
-            customer_id: element.customer_id
+            customer_id: element.customer_id,
+            value: parseFloat(element.value)
         })
         const response = await serviceEditElement(newElement)
         setIsLoadingForm(false)

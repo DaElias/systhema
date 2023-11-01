@@ -15,7 +15,7 @@ export default function FormElement(props) {
             customer_id: props.idCustomer, category_id: props.category_id,
             name: props.name, description: props.description,
             state: props.state, Category: props?.Category?.name,
-            delivery_description: props.delivery_description
+            delivery_description: props.delivery_description, value: props.value
         }
     )
     const [validate, setValidate] = useState(INIT_VALIDATE)
@@ -58,22 +58,10 @@ export default function FormElement(props) {
             state: !element.state ? "IN_PROCESS" : element.state,
             Category: { name: element.Category },
             uid: element.uid ? element.uid : Date.now(),
-            type: props.type
+            type: props.type,
+            value: !element.value ? 0 : element.value
         }
         props.handleElementsOptions(newElement)
-        // }
-        // if (props.type == "edit") {
-        //     const newElement = {
-        //         ...element,
-        //         id: -1,
-        //         customer_id: -1,
-        //         category_id: hasCategory[element.Category].id,
-        //         state: !element.state ? "IN_PROCESS" : element.state,
-        //         Category: { name: element.Category }
-        //     }
-        //     props.handleCreateElement(newElement)
-        // }
-
         props.handleCancel()
     }
 
@@ -110,6 +98,16 @@ export default function FormElement(props) {
                 value={element.delivery_description}
                 onChange={handleChange}
                 isDisabled={props.type == "view"}
+            />
+            <Input
+                label="Valore del servizio"
+                labelPlacement="outside-left"
+                className="w-full px-2"
+                value={element.value}
+                name='value'
+                onChange={handleChange}
+                isDisabled={props.type == "view"}
+                type="number"
             />
             <Select
                 label="Categoria"
