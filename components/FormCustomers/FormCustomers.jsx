@@ -121,7 +121,7 @@ export default function FormCustomers(props) {
                 delivery_description: element.delivery_description,
                 state: element.state,
                 category_id: element.category_id,
-                value: element.value
+                value: parseFloat(element.value)
             }
         })
         const newCostumers = clearObject(dateCustomers)
@@ -183,11 +183,11 @@ export default function FormCustomers(props) {
     const handlePrintBillElement = (element) =>
         handlePrintTicket({
             elementName: element.name,
-            customersName: dateCustomers.name,
+            customersName: `${dateCustomers.name} ${dateCustomers.last_name}`,
             delivery_description: element.delivery_description,
-            createdAt: element.createdAt,
-            id: element.id,
-            value: element.value
+            createdAt: !element.createdAt ? new Date() : element.createdAt,
+            id: element.id + "",
+            value: element.value + ""
         })
 
 

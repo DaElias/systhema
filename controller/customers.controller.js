@@ -23,6 +23,7 @@ export async function postCustomersController(req, res) {
             return new NextResponse("unauthorized", { status: 401 })
 
         const { newLisElements, newCostumers } = await req.json()
+        console.log(newLisElements, newCostumers)
         const customer = await prisma.customers.create({ data: { ...newCostumers } })
         // console.log(customer)
         await prisma.element.createMany({
