@@ -14,7 +14,9 @@
 
 # production
 /build
-
+.production-git
+.dcc-git
+.env
 # misc
 .DS_Store
 *.pem
