@@ -1,33 +1,30 @@
 {
   "name": "systema",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "tauri": "tauri"
   },
   "dependencies": {
     "@emotion/react": "11.11.1",
     "@emotion/styled": "11.11.0",
     "@nextui-org/react": "2.1.13",
     "@prisma/client": "^5.5.2",
-    "bcryptjs": "2.4.3",
     "framer-motion": "10.16.4",
-    "jspdf": "2.5.1",
     "next": "13.5.6",
-    "next-auth": "^4.24.4",
-    "next-connect": "1.0.0",
     "react": "18",
     "react-dom": "18"
   },
   "devDependencies": {
+    "@tauri-apps/cli": "^1.5.6",
     "autoprefixer": "10",
     "eslint": "8",
     "eslint-config-next": "13.5.6",
     "postcss": "8",
-    "prisma": "5.1.1",
     "tailwindcss": "3"
   }
 }

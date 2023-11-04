@@ -229,7 +229,7 @@ export default function ListCustomers() {
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-between items-center">
-          <Image src={LOGO} alt="logo" />
+          {/* <Image src={LOGO} alt="logo" /> */}
           <Button onClick={signOut} className="mb-4 px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-300">Cancella la sottoscrizione</Button>
         </div>
         <Divider className='' />
