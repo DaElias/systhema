@@ -50,13 +50,13 @@ const INITIAL_VISIBLE_COLUMNS = [
   "name",
   "last_name",
   "address",
-  "zip_code",
-  "city",
-  "provice",
+  // "zip_code",
+  // "city",
+  // "provice",
   "contact_1",
-  "contact_2",
+  // "contact_2",
   "email_1",
-  "email_2",
+  // "email_2",
   "actions"
   ,]
 
@@ -142,7 +142,7 @@ export default function ListCustomers() {
     if (type == "view")
       return "Visualizza cliente"
     if (type == "create")
-      return "Creare Nuovi Clienti"
+      return "Creare Cliente"
     if (type == "edit")
       return "Modifica Cliente"
     return ""
@@ -230,7 +230,7 @@ export default function ListCustomers() {
       <div className="flex flex-col gap-4">
         <div className="flex justify-between items-center">
           <Image src={LOGO} alt="logo" />
-          <Button onClick={signOut} className="mb-4 px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-300">Cancella la sottoscrizione</Button>
+          <Button onClick={signOut} className="mb-4 px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-300">Logout</Button>
         </div>
         <Divider className='' />
         {/* <h1>Form Customers</h1> */}
@@ -251,31 +251,6 @@ export default function ListCustomers() {
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-            {/* <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  size="sm"
-                  variant="flat"
-                >
-                  Status
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={statusFilter}
-                selectionMode="multiple"
-                onSelectionChange={setStatusFilter}
-              >
-                {statusOptions.map((status) => (
-                  <DropdownItem key={status.uid} className="capitalize">
-                    {capitalize(status.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown> */}
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
@@ -288,7 +263,6 @@ export default function ListCustomers() {
               </DropdownTrigger>
               <DropdownMenu
                 disallowEmptySelection
-                // aria-label="Table Columns"
                 closeOnSelect={false}
                 selectedKeys={visibleColumns}
                 selectionMode="multiple"
@@ -307,7 +281,7 @@ export default function ListCustomers() {
               size="sm"
               onClick={() => hadleShowModalComponet({ type: "create" })}
             >
-              Creare Nuovi Clienti
+              Creare Clienti
             </Button>
           </div>
         </div>

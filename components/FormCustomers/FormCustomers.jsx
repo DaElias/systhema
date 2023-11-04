@@ -5,7 +5,7 @@ import useListElements from '@/hooks/getsHooks/useListElements';
 import ListElements from './ListElements/ListElements';
 import { Button, Divider, Input, Select, SelectItem, Textarea } from '@nextui-org/react';
 import { MailIcon } from '../ui/svg/MailIcon';
-import { HAS_PROVINCE, clearObject } from '@/lib/utils';
+import { HAS_PROVINCE, TRADUCTION_ITALY, clearObject } from '@/lib/utils';
 import Link from 'next/link';
 import useValidateFelds from '@/hooks/useValidateFelds';
 import { serviceCreateCustomers, serviceCreateElement, serviceDeleteElement, serviceEditCustomer, serviceEditElement } from '@/service/apiService';
@@ -47,14 +47,13 @@ export default function FormCustomers(props) {
         const validateName = handleValidations("name")
         const validateLast_name = handleValidations("last_name")
         const validateAddress = handleValidations("address")
-        const validateZip_code = handleValidations("zip_code")
-        const validateCity = handleValidations("city")
-        const validateProvice = handleValidations("provice")
-        const validateContact_1 = handleValidations("contact_1")
-        const validateEmail_1 = handleValidations("email_1")
+        // const validateZip_code = handleValidations("zip_code")
+        // const validateCity = handleValidations("city")
+        // const validateProvice = handleValidations("provice")
+        // const validateContact_1 = handleValidations("contact_1")
+        // const validateEmail_1 = handleValidations("email_1")
 
-        if (validateName || validateLast_name || validateAddress || validateZip_code || validateCity ||
-            validateProvice || validateContact_1 || validateEmail_1)
+        if (validateName || validateLast_name || validateAddress)
             return
 
         if (props.type == "create") {
@@ -180,30 +179,29 @@ export default function FormCustomers(props) {
         return response.status == 200
     }
 
-    const handlePrintBillElement = (element) =>
+    const handlePrintBillElement = (element) => {
         handlePrintTicket({
             elementName: element.name,
             customersName: `${dateCustomers.name} ${dateCustomers.last_name}`,
             delivery_description: element.delivery_description,
             createdAt: !element.createdAt ? new Date() : element.createdAt,
             id: element.id + "",
-            value: element.value + ""
+            value: element.value + "",
+            state: TRADUCTION_ITALY[element.state] + ""
         })
+    }
 
 
     return (
-        <div
-            className={`flex flex-col gap-4 w-full pb-2 ${isLoadingForm && 'cursor-wait'} `}
-        // onSubmit={handleSubmit}
-        >
-            <h3 className='text-md font-extrabold'>Costumer Information</h3>
+        <div className={`flex flex-col gap-4 w-full pb-2 ${isLoadingForm && 'cursor-wait'} `}>
+            <h3 className='text-md font-extrabold'>Informazione del Cliente</h3>
             {/* Form Customers */}
             <>
                 <div className=''>
                     <Divider className='mb-4' />
                     <div className='flex flex-col'>
                         <Input
-                            label="Code Fiscale"
+                            label="Codice Fiscale"
                             labelPlacement="outside"
                             placeholder="..."
                             value={dateCustomers.fiscale_code}
@@ -257,8 +255,8 @@ export default function FormCustomers(props) {
                         name='zip_code'
                         onChange={handleChange}
                         isDisabled={props.type == "view"}
-                        isInvalid={validateCustomers.zip_code}
-                        errorMessage={validateCustomers.zip_code && "Il C.A.P. del campo è obbligatorio!!"}
+                    // isInvalid={validateCustomers.zip_code}
+                    // errorMessage={validateCustomers.zip_code && "Il C.A.P. del campo è obbligatorio!!"}
                     />
                     <Input
                         label="Cittá"
@@ -267,8 +265,8 @@ export default function FormCustomers(props) {
                         name='city'
                         onChange={handleChange}
                         isDisabled={props.type == "view"}
-                        isInvalid={validateCustomers.city}
-                        errorMessage={validateCustomers.city && "Il cittá del campo è obbligatorio!!"}
+                    // isInvalid={validateCustomers.city}
+                    // errorMessage={validateCustomers.city && "Il cittá del campo è obbligatorio!!"}
                     />
                     <Select
                         label="Provice"
@@ -277,8 +275,8 @@ export default function FormCustomers(props) {
                         defaultSelectedKeys={[dateCustomers.provice]}
                         isDisabled={props.type == "view"}
                         onChange={handleChange}
-                        isInvalid={validateCustomers.provice}
-                        errorMessage={validateCustomers.provice && "Il provice del campo è obbligatorio!!"}
+                    // isInvalid={validateCustomers.provice}
+                    // errorMessage={validateCustomers.provice && "Il provice del campo è obbligatorio!!"}
                     >
                         {
                             // props.type != "view" &&
@@ -302,8 +300,8 @@ export default function FormCustomers(props) {
                             name='contact_1'
                             onChange={handleChange}
                             isDisabled={props.type == "view"}
-                            isInvalid={validateCustomers.contact_1}
-                            errorMessage={validateCustomers.contact_1 && "Il telefono del campo è obbligatorio!!"}
+                        // isInvalid={validateCustomers.contact_1}
+                        // errorMessage={validateCustomers.contact_1 && "Il telefono del campo è obbligatorio!!"}
 
                         />
                         {dateCustomers.contact_1 ?
@@ -359,8 +357,8 @@ export default function FormCustomers(props) {
                         name='email_1'
                         onChange={handleChange}
                         isDisabled={props.type == "view"}
-                        isInvalid={validateCustomers.email_1}
-                        errorMessage={validateCustomers.email_1 && "Il email del campo è obbligatorio!!"}
+                    // isInvalid={validateCustomers.email_1}
+                    // errorMessage={validateCustomers.email_1 && "Il email del campo è obbligatorio!!"}
 
                     />
                     <Input
@@ -396,10 +394,10 @@ export default function FormCustomers(props) {
                         variant='ghost'
                         type='submit'
                         onClick={() => handleSubmit()}
-                    >Salvar</Button>
+                    >Mantenere</Button>
                 )}
                 {props.handleCancel && (
-                    <Button onClick={() => props.handleCancel()} color="danger" variant='ghost'>{props.type == "view" ? "Uscita" : "Annulla"}</Button>
+                    <Button onClick={() => props.handleCancel()} color="danger" variant='ghost'>Esci</Button>
                 )}
             </div>
         </div>

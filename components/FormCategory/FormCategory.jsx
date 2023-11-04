@@ -14,10 +14,8 @@ export default function FormCategory({ handleCancel, listCategories = [] }) {
         const { name, description } = dataForm
         if (name.length == 0 || description.length == 0)
             return
-        // console.log(dataForm)
 
         const respose = await serviceCreateCategory({ name, description })
-        // console.log(respose)
         if (respose.status != "create") {
             console.log("create")
         } else {
@@ -44,7 +42,7 @@ export default function FormCategory({ handleCancel, listCategories = [] }) {
         <form onSubmit={handleSubmit}>
             <Divider className='mb-2' />
             <Input
-                label="Name"
+                label="Nome"
                 labelPlacement="outside"
                 placeholder="..."
                 value={dataForm.name}
@@ -54,21 +52,20 @@ export default function FormCategory({ handleCancel, listCategories = [] }) {
                 errorMessage={validateError && `${dataForm.name} is already exist!!`}
             />
             <Textarea
+                label="Descrizione"
                 name="description"
-                label="Description"
                 labelPlacement="outside"
-                placeholder="add description"
+                placeholder="Aggiungi una descrizione"
                 className=" w-full"
                 value={dataForm.description}
                 onChange={handleChange}
             />
             <div className='flex gap-2 justify-center py-2'>
-                <Button isDisabled={validateError} color="primary" variant='ghost' type='submit' >Salvar</Button>
+                <Button isDisabled={validateError} color="primary" variant='ghost' type='submit' >Mantenere</Button>
                 {handleCancel && (
-                    <Button onClick={() => handleCancel()} color="danger" variant='ghost'>Cancell</Button>
+                    <Button onClick={() => handleCancel()} color="danger" variant='ghost'>Annulla</Button>
                 )}
             </div>
-
         </form>
     )
 }

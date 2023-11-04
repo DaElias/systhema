@@ -100,7 +100,7 @@ export default function FormElement(props) {
                 isDisabled={props.type == "view"}
             />
             <Input
-                label="Valore del servizio"
+                label="Preventivo Costi"
                 labelPlacement="outside-left"
                 className="w-full px-2"
                 value={element.value}
@@ -113,7 +113,6 @@ export default function FormElement(props) {
                 label="Categoria"
                 className="w-full"
                 name='Category'
-                // defaultSelectedKeys={[hasCategory[element.Category]?.id]}
                 defaultSelectedKeys={[element.Category]}
                 isDisabled={props.type == "view"}
                 onChange={handleChange}
@@ -129,7 +128,7 @@ export default function FormElement(props) {
                 }
             </Select>
             <Select
-                label="state"
+                label="stato"
                 className="w-full"
                 name='state'
                 defaultSelectedKeys={[element.state]}
@@ -147,10 +146,10 @@ export default function FormElement(props) {
 
             <div className='flex gap-2 justify-center'>
                 {props.type != "view" && (
-                    <Button color="primary" variant='ghost' onClick={() => handleSubmit()} >Salvar</Button>
+                    <Button color="primary" variant='ghost' onClick={() => handleSubmit()} >Mantenere</Button>
                 )}
                 {props.handleCancel && (
-                    <Button onClick={() => props.handleCancel()} color="danger" variant='ghost'>{props.type == "view" ? "Uscita" : "Annulla"}</Button>
+                    <Button onClick={() => props.handleCancel()} color="danger" variant='ghost'>Esci</Button>
                 )}
             </div>
         </div>
