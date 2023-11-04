@@ -1,20 +1,17 @@
 "use client"
-import { useState, useCallback, useMemo, useEffect } from "react";
+import { useState, useCallback, useMemo } from "react";
 import {
-  Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button, DropdownTrigger, Dropdown, DropdownMenu, DropdownItem, Chip, Pagination, Divider,
+  Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Input, Button, DropdownTrigger, Dropdown, DropdownMenu, DropdownItem, Chip, Pagination, Divider, Image,
 } from "@nextui-org/react";
 import { PlusIcon } from "../ui/svg/PlusIcon";
 import { VerticalDotsIcon } from "../ui/svg/VerticalDotsIcon";
 import { SearchIcon } from "../ui/svg/SearchIcon";
 import { ChevronDownIcon } from "../ui/svg/ChevronDownIcon";
-// import {columns, constumers, statusOptions} from "./mockup";
 import { capitalize } from "@/lib/utils";
 import ModalComponent from "../ui/ModalComponent";
 import FormCustomers from "../FormCustomers/FormCustomers";
 import useFetch from "@/hooks/useFetch";
-import Image from "next/image";
 import LOGO from "/public/logo.png"
-import { signOut } from "next-auth/react";
 import { serviceDeleteCustomer } from "@/service/apiService";
 const statusColorMap = {
   active: "success",
@@ -142,7 +139,7 @@ export default function ListCustomers() {
     if (type == "view")
       return "Visualizza cliente"
     if (type == "create")
-      return "Creare Nuovi Clienti"
+      return "Creare cliente"
     if (type == "edit")
       return "Modifica Cliente"
     return ""
@@ -151,19 +148,6 @@ export default function ListCustomers() {
   const renderCell = useCallback((user, columnKey) => {
     const cellValue = user[columnKey];
     switch (columnKey) {
-      // case "name":
-      //   return (
-      //     <User
-      //       avatarProps={{ radius: "full", size: "sm", src: user.avatar }}
-      //       classNames={{
-      //         description: "text-default-500",
-      //       }}
-      //       description={user.email}
-      //       name={cellValue}
-      //     >
-      //       {user.email}
-      //     </User>
-      //   );
       case "role":
         return (
           <div className="flex flex-col">
@@ -229,8 +213,7 @@ export default function ListCustomers() {
     return (
       <div className="flex flex-col gap-4">
         <div className="flex justify-between items-center">
-          {/* <Image src={LOGO} alt="logo" /> */}
-          <Button onClick={signOut} className="mb-4 px-6 py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition duration-300">Cancella la sottoscrizione</Button>
+          <Image src={LOGO.src} alt="logo" />
         </div>
         <Divider className='' />
         {/* <h1>Form Customers</h1> */}
@@ -251,31 +234,6 @@ export default function ListCustomers() {
             onValueChange={onSearchChange}
           />
           <div className="flex gap-3">
-            {/* <Dropdown>
-              <DropdownTrigger className="hidden sm:flex">
-                <Button
-                  endContent={<ChevronDownIcon className="text-small" />}
-                  size="sm"
-                  variant="flat"
-                >
-                  Status
-                </Button>
-              </DropdownTrigger>
-              <DropdownMenu
-                disallowEmptySelection
-                aria-label="Table Columns"
-                closeOnSelect={false}
-                selectedKeys={statusFilter}
-                selectionMode="multiple"
-                onSelectionChange={setStatusFilter}
-              >
-                {statusOptions.map((status) => (
-                  <DropdownItem key={status.uid} className="capitalize">
-                    {capitalize(status.name)}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
-            </Dropdown> */}
             <Dropdown>
               <DropdownTrigger className="hidden sm:flex">
                 <Button
@@ -307,7 +265,7 @@ export default function ListCustomers() {
               size="sm"
               onClick={() => hadleShowModalComponet({ type: "create" })}
             >
-              Creare Nuovi Clienti
+              Creare Cliente
             </Button>
           </div>
         </div>

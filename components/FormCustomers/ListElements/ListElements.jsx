@@ -11,7 +11,6 @@ import { DeleteIcon } from "@/components/ui/svg/DeleteIcon"
 import { TRADUCTION_ITALY } from "@/lib/utils"
 import { PlusIcon } from "@/components/ui/svg/PlusIcon"
 import PrintIcon from "@/components/ui/svg/PrintIcon"
-// import { elements } from "./mockup"
 
 const statusColorMap = {
     IN_PROCESS: "warning",
@@ -37,8 +36,6 @@ export default function ListElements({ typeCustomers, listElements, isLoading, h
         data: { typeCustomers, listElements, isLoading },
         type: typeCustomers
     })
-    // console.log(listElements)
-    // console.log("idCustomer: ", idCustomer)
     const titleModalComponent = useMemo(() => {
         const { type } = isOpenComponentElements
         if (type == "view")
@@ -126,7 +123,6 @@ export default function ListElements({ typeCustomers, listElements, isLoading, h
                 isOpen={isOpenComponentElements.value}
                 onClose={() => setIsOpenComponentElements(prev => { return { ...prev, value: false, type: typeCustomers } })}
                 title={titleModalComponent}
-                // size="md"
                 size={"sm"}
             >
                 <FormElement {...isOpenComponentElements.data}
@@ -143,7 +139,7 @@ export default function ListElements({ typeCustomers, listElements, isLoading, h
             <ModalComponent
                 isOpen={isOpenComponentAddCategory}
                 onClose={() => setIsOpenComponentAddCategory(false)}
-                title={"Create a new Category"}
+                title={"Crea Categoria"}
                 size={"sm"}
             >
                 <FormCategory
@@ -153,7 +149,7 @@ export default function ListElements({ typeCustomers, listElements, isLoading, h
             </ModalComponent>
             <Divider className='mb-2' />
             <div className="flex justify-between items-center">
-                <h3 className='text-md font-extrabold'>Elenco degli articoli</h3>
+                <h3 className='text-md font-extrabold'>Elementi</h3>
                 <div className="flex gap-2">
                     <Button
                         className="bg-foreground text-background"
@@ -162,7 +158,7 @@ export default function ListElements({ typeCustomers, listElements, isLoading, h
                         isDisabled={isOpenComponentElements.type == "view"}
                         onClick={() => hadleShowModalComponetElement({ type: "create" })}
                     >
-                        Aggiungi nuovo elemento
+                        Aggiungi elemento
                     </Button>
                     <Button
                         className="bg-foreground text-background"
@@ -171,7 +167,7 @@ export default function ListElements({ typeCustomers, listElements, isLoading, h
                         isDisabled={isOpenComponentElements.type == "view"}
                         onClick={() => setIsOpenComponentAddCategory(true)}
                     >
-                        Aggiungi nuova categoria
+                        Aggiungi categoria
                     </Button>
                 </div>
             </div>

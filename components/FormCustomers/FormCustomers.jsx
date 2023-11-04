@@ -9,7 +9,6 @@ import { HAS_PROVINCE, clearObject } from '@/lib/utils';
 import Link from 'next/link';
 import useValidateFelds from '@/hooks/useValidateFelds';
 import { serviceCreateCustomers, serviceCreateElement, serviceDeleteElement, serviceEditCustomer, serviceEditElement } from '@/service/apiService';
-import handlePrintTicket from '@/lib/PrintPDF/handlePrintTicket';
 
 
 export default function FormCustomers(props) {
