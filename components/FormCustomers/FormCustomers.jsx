@@ -307,7 +307,7 @@ export default function FormCustomers(props) {
                         {dateCustomers.contact_1 ?
                             <Link
                                 className='border-green-500 border-b-2 mx-2 text-green-500'
-                                href={`https://wa.me/${dateCustomers.contact_1}`}
+                                href={`https://wa.me/39${dateCustomers.contact_1}`}
                                 target='_blank'
                             >
                                 Vai su Whatsapp
@@ -333,7 +333,7 @@ export default function FormCustomers(props) {
                         {dateCustomers.contact_2 ?
                             <Link
                                 className='border-green-500 border-b-2 mx-2 text-green-500'
-                                href={`https://wa.me/${dateCustomers.contact_2}`}
+                                href={`https://wa.me/39${dateCustomers.contact_2}`}
                                 target='_blank' >
                                 Vai su Whatsapp
                             </Link>
