@@ -12,7 +12,7 @@
   },
   "tauri": {
     "allowlist": {
-      "all": false
+      "all": true
     },
     "bundle": {
       "active": true,
@@ -56,10 +56,10 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
         "resizable": true,
+        "height": 800,
         "title": "Systema",
-        "width": 800
+        "width": 1000
       }
     ]
   }

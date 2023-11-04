@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/util/database";
+import { prisma } from "@/util/localStorage";
 import { validateToken } from "@/service/jwt.validate";
 
 

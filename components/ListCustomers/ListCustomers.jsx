@@ -19,6 +19,10 @@ const statusColorMap = {
   vacation: "warning",
 };
 
+import { Store } from "tauri-plugin-store-api";
+
+
+
 
 const columns = [
   { name: "Code Fiscale", uid: "fiscale_code" },
@@ -62,7 +66,7 @@ const INITIAL_ROWS_PER_PAGE = 10
 const INITIAL_STATE_IS_OPEN = { value: false, data: {}, type: "view" }
 export default function ListCustomers() {
   // get Data
-  const [data = [], isLoading, error, update] = useFetch("/api/customers")
+  const [data = [], isLoading, error, update] = useFetch("api-customers", [])
   const constumers = useMemo(() => !data?.length ? [] : data, [data])
   // Modal
   const [isOpenComponent, setIsOpenComponent] = useState(INITIAL_STATE_IS_OPEN)

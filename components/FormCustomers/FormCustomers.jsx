@@ -6,9 +6,10 @@ import ListElements from './ListElements/ListElements';
 import { Button, Divider, Input, Select, SelectItem, Textarea } from '@nextui-org/react';
 import { MailIcon } from '../ui/svg/MailIcon';
 import { HAS_PROVINCE, clearObject } from '@/lib/utils';
-import Link from 'next/link';
 import useValidateFelds from '@/hooks/useValidateFelds';
 import { serviceCreateCustomers, serviceCreateElement, serviceDeleteElement, serviceEditCustomer, serviceEditElement } from '@/service/apiService';
+import { open } from '@tauri-apps/api/shell';
+import handlePrintTicket from '@/lib/PrintPDF/handlePrintTicket';
 
 
 export default function FormCustomers(props) {
@@ -306,13 +307,13 @@ export default function FormCustomers(props) {
 
                         />
                         {dateCustomers.contact_1 ?
-                            <Link
-                                className='border-green-500 border-b-2 mx-2 text-green-500'
-                                href={`https://wa.me/${dateCustomers.contact_1}`}
+                            <div
+                                className='cursor-pointer border-green-500 border-b-2 mx-2 text-green-500'
+                                onClick={() => open(`https://wa.me/${dateCustomers.contact_1}`)}
                                 target='_blank'
                             >
                                 Vai su Whatsapp
-                            </Link>
+                            </div>
                             :
                             <span className='border-green-500 border-b-2 mx-2 text-green-500 opacity-50'>
                                 Vai su Whatsapp
@@ -332,12 +333,13 @@ export default function FormCustomers(props) {
                             isDisabled={props.type == "view"}
                         />
                         {dateCustomers.contact_2 ?
-                            <Link
-                                className='border-green-500 border-b-2 mx-2 text-green-500'
-                                href={`https://wa.me/${dateCustomers.contact_2}`}
-                                target='_blank' >
+                            <div
+                                className='cursor-pointer border-green-500 border-b-2 mx-2 text-green-500'
+                                onClick={() => open(`https://wa.me/${dateCustomers.contact_2}`)}
+                                target='_blank'
+                            >
                                 Vai su Whatsapp
-                            </Link>
+                            </div>
                             :
                             <span className='border-green-500 border-b-2 mx-2 text-green-500 opacity-50'>
                                 Vai su Whatsapp

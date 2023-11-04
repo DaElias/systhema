@@ -1,23 +1,23 @@
 import { useState, useEffect } from 'react'
+import { Store } from "tauri-plugin-store-api";
 
-function useFetch(url) {
+function useFetch(url, defaultValue) {
     const [data, setData] = useState(null)
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
     const [update, setUpdate] = useState(false)
 
     useEffect(() => {
-        const controller = new AbortController()
         const fetchData = async () => {
             try {
                 setLoading(true)
-                const { signal } = controller
-                const response = await fetch(url, { signal })
-                if (!response.ok) {
-                    throw new Error(`Error de red: ${response.status}`)
+                const store = new Store(".settings.dat")
+                const data = await store.get(url)
+                if (!data) {
+                    setData(defaultValue)
+                } else {
+                    setData(data)
                 }
-                const data = await response.json()
-                setData(data)
                 setLoading(false)
             } catch (error) {
                 if (error.name === 'AbortError') {
@@ -29,9 +29,6 @@ function useFetch(url) {
             }
         }
         fetchData()
-        return () => {
-            controller.abort()
-        }
     }, [update])
 
     return [data, loading, error, setUpdate]

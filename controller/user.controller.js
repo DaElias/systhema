@@ -1,4 +1,4 @@
-import { prisma } from "@/util/database"
+import { prisma } from "@/util/localStorage"
 import { hash } from "bcryptjs"
 import { NextResponse } from "next/server"
 
