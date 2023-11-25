@@ -15,15 +15,14 @@ export default function FormCategory({ handleCancel, listCategories = [] }) {
         if (name.length == 0 || description.length == 0)
             return
         // console.log(dataForm)
-
         const respose = await serviceCreateCategory({ name, description })
         // console.log(respose)
-        if (respose.status != "create") {
+        if (respose) {
             console.log("create")
+            handleCancel()
         } else {
             console.log("error")
         }
-        handleCancel()
     }
 
 

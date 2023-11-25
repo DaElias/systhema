@@ -13,16 +13,13 @@ import FormCustomers from "../FormCustomers/FormCustomers";
 import useFetch from "@/hooks/useFetch";
 import LOGO from "/public/logo.png"
 import { serviceDeleteCustomer } from "@/service/apiService";
+import { KEY_DOCUMENT_STOREGE_API_CUSTOMERS } from "@/util/const";
+
 const statusColorMap = {
   active: "success",
   paused: "danger",
   vacation: "warning",
 };
-
-import { Store } from "tauri-plugin-store-api";
-
-
-
 
 const columns = [
   { name: "Code Fiscale", uid: "fiscale_code" },
@@ -45,7 +42,6 @@ const statusOptions = [
   { name: "Vacation", uid: "vacation" },
 ];
 
-
 const INITIAL_VISIBLE_COLUMNS = [
   // "fiscale_code",
   "name",
@@ -66,7 +62,7 @@ const INITIAL_ROWS_PER_PAGE = 10
 const INITIAL_STATE_IS_OPEN = { value: false, data: {}, type: "view" }
 export default function ListCustomers() {
   // get Data
-  const [data = [], isLoading, error, update] = useFetch("api-customers", [])
+  const [data = [], isLoading, error, update] = useFetch(KEY_DOCUMENT_STOREGE_API_CUSTOMERS, [])
   const constumers = useMemo(() => !data?.length ? [] : data, [data])
   // Modal
   const [isOpenComponent, setIsOpenComponent] = useState(INITIAL_STATE_IS_OPEN)

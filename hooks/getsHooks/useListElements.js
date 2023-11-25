@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { serviceGetElementByIdCustomers } from "@/service/apiService";
 
 export default function useListElements({ id, type }) {
     const [list, setList] = useState([])
@@ -8,9 +9,10 @@ export default function useListElements({ id, type }) {
     useEffect(() => {
         const getData = async () => {
             try {
+                const listElements = await serviceGetElementByIdCustomers(id)
+                // const data = await fetch(`/api/elements/${id}`).then(res => res.json())
                 setIsLoading(true)
-                const data = await fetch(`/api/elements/${id}`).then(res => res.json())
-                setList(data)
+                setList(listElements)
                 setIsLoading(false)
             } catch (error) {
                 setIsError(true)

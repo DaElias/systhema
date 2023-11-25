@@ -39,6 +39,7 @@ export default function FormCustomers(props) {
     }, dateCustomers)
     const [listElements, isLoading, isError,
         setListElement, updateListElements] = useListElements({ id: props.id, type: props.type })
+    console.log(listElements)
     const [isLoadingForm, setIsLoadingForm] = useState(false)
 
     const handleSubmit = (event = null) => {

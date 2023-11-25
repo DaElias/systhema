@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Store } from "tauri-plugin-store-api";
+import { KEY_DOCUMENT_STOREGE } from '@/util/const';
 
 function useFetch(url, defaultValue) {
     const [data, setData] = useState(null)
@@ -11,7 +12,7 @@ function useFetch(url, defaultValue) {
         const fetchData = async () => {
             try {
                 setLoading(true)
-                const store = new Store(".settings.dat")
+                const store = new Store(KEY_DOCUMENT_STOREGE)
                 const data = await store.get(url)
                 if (!data) {
                     setData(defaultValue)
@@ -31,7 +32,7 @@ function useFetch(url, defaultValue) {
         fetchData()
     }, [update])
 
-    return [data, loading, error, setUpdate]
+    return [data, loading, error, () => setUpdate(prev => !prev)]
 }
 
 export default useFetch
