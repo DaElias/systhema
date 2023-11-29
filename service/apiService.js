@@ -1,6 +1,6 @@
 import { Store } from "tauri-plugin-store-api";
 import { generateUid } from "@/lib/utils";
-import { KEY_DOCUMENT_STOREGE, KEY_DOCUMENT_STOREGE_API_CATEGORES, KEY_DOCUMENT_STOREGE_API_CUSTOMERS } from '@/util/const';
+import { KEY_DOCUMENT_STOREGE, KEY_DOCUMENT_STOREGE_API_CATEGORES, KEY_DOCUMENT_STOREGE_API_CUSTOMERS, KEY_DOCUMENT_STOREGE_API_VISIBLE_COLUMNS } from '@/util/const';
 
 
 // * Elements
@@ -139,6 +139,28 @@ export async function serviceCreateCategory({ name, description }) {
     } catch (error) {
         console.log(error)
         return false
+    }
+}
+
+
+export async function serviceUpdateVisibleColumns(listColums = []) {
+    try {
+        const store = new Store(KEY_DOCUMENT_STOREGE)
+        await store.set(KEY_DOCUMENT_STOREGE_API_VISIBLE_COLUMNS, listColums)
+        await store.save()
+        return true
+    } catch (error) {
+        console.log(error)
+        return false
+    }
+}
+export async function serviceGetVisibleColumns() {
+    try {
+        const store = new Store(KEY_DOCUMENT_STOREGE)
+        return await store.get(KEY_DOCUMENT_STOREGE_API_VISIBLE_COLUMNS) || []
+    } catch (error) {
+        console.log(error)
+        return []
     }
 }
 

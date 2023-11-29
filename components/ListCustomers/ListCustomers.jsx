@@ -14,6 +14,7 @@ import useFetch from "@/hooks/useFetch";
 import LOGO from "/public/logo.png"
 import { serviceDeleteCustomer } from "@/service/apiService";
 import { KEY_DOCUMENT_STOREGE_API_CUSTOMERS } from "@/util/const";
+import useVisibleColumns from "@/hooks/useVisibleColums";
 
 const statusColorMap = {
   active: "success",
@@ -42,21 +43,6 @@ const statusOptions = [
   { name: "Vacation", uid: "vacation" },
 ];
 
-const INITIAL_VISIBLE_COLUMNS = [
-  // "fiscale_code",
-  "name",
-  "last_name",
-  "address",
-  "zip_code",
-  "city",
-  "provice",
-  "contact_1",
-  "contact_2",
-  "email_1",
-  "email_2",
-  "actions"
-  ,]
-
 
 const INITIAL_ROWS_PER_PAGE = 10
 const INITIAL_STATE_IS_OPEN = { value: false, data: {}, type: "view" }
@@ -69,7 +55,7 @@ export default function ListCustomers() {
   // Table
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
-  const [visibleColumns, setVisibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
+  const [visibleColumns, setVisibleColumns] = useVisibleColumns()
   const [statusFilter, setStatusFilter] = useState("all");
   const [rowsPerPage, setRowsPerPage] = useState(INITIAL_ROWS_PER_PAGE);
   const [sortDescriptor, setSortDescriptor] = useState({
@@ -212,12 +198,11 @@ export default function ListCustomers() {
   const topContent = useMemo(() => {
     return (
       <div className="flex flex-col gap-4">
-        <div className="flex justify-between items-center">
+        <div className="flex justify-center items-center">
           <Image src={LOGO.src} alt="logo" />
         </div>
         <Divider className='' />
         {/* <h1>Form Customers</h1> */}
-
         <div className="flex justify-between gap-3 items-end">
           <Input
             isClearable
