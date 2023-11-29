@@ -98,9 +98,9 @@ export default function FormCustomers(props) {
             }))
         } else if (newElement.type == "delete") {
             setIsLoadingForm(true)
-            if (newElement.id != -1) {
+            if (newElement.id) {
                 const response = await serviceDeleteElement(
-                    { idElement: newElement.id, idCustomers: newElement.customer_id }
+                    { idElement: newElement.id, idCustomers: dateCustomers.id }
                 )
                 if (response.status != 200) {
                     setIsLoadingForm(false)
@@ -138,6 +138,7 @@ export default function FormCustomers(props) {
 
     const handleEditCutomers = async () => {
         const costumer = clearObject(dateCustomers)
+        console.log(dateCustomers)
         const response = await serviceEditCustomer(costumer)
         if (response.status == 200) {
             props.handleUpdate()
@@ -181,15 +182,18 @@ export default function FormCustomers(props) {
         return response.status == 200
     }
 
-    const handlePrintBillElement = (element) =>
-        handlePrintTicket({
-            elementName: element.name,
-            customersName: `${dateCustomers.name} ${dateCustomers.last_name}`,
-            delivery_description: element.delivery_description,
-            createdAt: !element.createdAt ? new Date() : element.createdAt,
-            id: element.id + "",
-            value: element.value + ""
-        })
+    const handlePrintBillElement = (element) => {
+
+        // handlePrintTicket({
+        //     elementName: element.name,
+        //     customersName: `${dateCustomers.name} ${dateCustomers.last_name}`,
+        //     delivery_description: element.delivery_description,
+        //     createdAt: !element.createdAt ? new Date() : element.createdAt,
+        //     id: element.id + "",
+        //     value: element.value + ""
+        // })
+    }
+
 
 
     return (
