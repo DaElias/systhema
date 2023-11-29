@@ -1,6 +1,6 @@
 import { Store } from "tauri-plugin-store-api";
 import { generateUid } from "@/lib/utils";
-import { KEY_DOCUMENT_STOREGE, KEY_DOCUMENT_STOREGE_API_CATEGORES, KEY_DOCUMENT_STOREGE_API_CUSTOMERS, KEY_DOCUMENT_STOREGE_API_ELEMENTS } from '@/util/const';
+import { KEY_DOCUMENT_STOREGE, KEY_DOCUMENT_STOREGE_API_CATEGORES, KEY_DOCUMENT_STOREGE_API_CUSTOMERS } from '@/util/const';
 
 
 
@@ -24,13 +24,7 @@ function createRequestoptions(method, body) {
 
 export async function serviceGetElementByIdCustomers(id) {
     const store = new Store(KEY_DOCUMENT_STOREGE)
-    const listElements = await store.get(KEY_DOCUMENT_STOREGE_API_ELEMENTS) || []
-    return listElements.filter(element => {
-        if (element.customer_id == id) {
-            return element
-        }
-        return null
-    })
+    return await store.get(id) || []
 }
 
 
@@ -42,37 +36,48 @@ export async function serviceCreateElement(newElement) {
     const options = createRequestoptions('POST', newElement);
     return await sendRequest(`/api/elements`, options)
 }
-export async function serviceDeleteElement(id) {
-    const options = createRequestoptions('DELETE', { id });
-    return await sendRequest(`/api/elements`, options)
+export async function serviceDeleteElement({ idElement, idCustomers }) {
+    try {
+        const store = new Store(KEY_DOCUMENT_STOREGE)
+        const listElements = await store.get(idCustomers) || []
+        const newListElements = listElements.filter(
+            (element) => {
+                if (element.id != idElement) {
+                    return element
+                }
+                return null
+            }
+        )
+        await store.set(idCustomers, newListElements)
+        await store.save()
+        return { status: 200 }
+    } catch (error) {
+        return { status: 400, message: error.toString() }
+    }
 }
 
 // * Customers
-export async function serviceCreateCustomers({ newCostumers, newLisElements = [] }) {
+export async function serviceCreateCustomers({ newCostumers, newLisElements }) {
     try {
         const store = new Store(KEY_DOCUMENT_STOREGE)
-
         const list_custumers = await store.get(KEY_DOCUMENT_STOREGE_API_CUSTOMERS)
-
+        console.log("newCostumers, newLisElements", newCostumers, newLisElements)
         const idCustomer = generateUid()
         list_custumers.push({ ...newCostumers, id: idCustomer })
         await store.set(KEY_DOCUMENT_STOREGE_API_CUSTOMERS, list_custumers)
         await store.save()
-
-        const newListElements = newLisElements.map((element) => {
+        const newListElementsToSave = newLisElements.map((element) => {
             element.id = generateUid()
             element.customer_id = idCustomer
+            return element
         })
-
-        let listELements = await store.get(KEY_DOCUMENT_STOREGE_API_ELEMENTS) || []
-        listELements = [...listELements, ...newListElements]
-        await store.set(KEY_DOCUMENT_STOREGE_API_ELEMENTS, listELements)
+        console.log("newListElementsToSave", newListElementsToSave)
+        await store.set(idCustomer, newListElementsToSave)
         await store.save()
-
-
         return { status: 201 }
     } catch (error) {
         console.log(error)
+        return { status: 400, message: error.toString() }
     }
 }
 export async function serviceEditCustomer(customer) {
@@ -80,8 +85,24 @@ export async function serviceEditCustomer(customer) {
     return await sendRequest(`/api/customers`, options)
 }
 export async function serviceDeleteCustomer(id) {
-    const options = createRequestoptions('DELETE', { id });
-    return await sendRequest(`/api/customers`, options)
+    try {
+        const store = new Store(KEY_DOCUMENT_STOREGE)
+        const listCustomers = await store.get(KEY_DOCUMENT_STOREGE_API_CUSTOMERS)
+        const newListCustomers = listCustomers.filter(
+            (customer) => {
+                if (customer.id != id) {
+                    return customer
+                }
+                return null
+            }
+        )
+        await store.set(KEY_DOCUMENT_STOREGE_API_CUSTOMERS, newListCustomers)
+        await store.save()
+        return { status: 200 }
+    } catch (error) {
+        console.log(error)
+        return { status: 400, message: error.toString() }
+    }
 }
 
 //  * Category

@@ -54,7 +54,7 @@ export default function FormElement(props) {
             delivery_description: element.delivery_description,
             id: !element.id ? -1 : element.id,
             customer_id: !element.customer_id ? -1 : element.customer_id,
-            category_id: hasCategory[element.Category].id,
+            category_id: element["Category"],
             state: !element.state ? "IN_PROCESS" : element.state,
             Category: { name: element.Category },
             uid: element.uid ? element.uid : Date.now(),
@@ -113,8 +113,7 @@ export default function FormElement(props) {
                 label="Categoria"
                 className="w-full"
                 name='Category'
-                // defaultSelectedKeys={[hasCategory[element.Category]?.id]}
-                defaultSelectedKeys={[element.Category]}
+                defaultSelectedKeys={[element.category_id]}
                 isDisabled={props.type == "view"}
                 onChange={handleChange}
                 isInvalid={validate.category}
@@ -122,7 +121,7 @@ export default function FormElement(props) {
             >
                 {
                     props.listCategories.map((item) => (
-                        <SelectItem key={item.name} value={item.id}>
+                        <SelectItem key={item.id} value={item.name}>
                             {item.name}
                         </SelectItem>
                     ))

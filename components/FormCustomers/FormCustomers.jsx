@@ -39,7 +39,6 @@ export default function FormCustomers(props) {
     }, dateCustomers)
     const [listElements, isLoading, isError,
         setListElement, updateListElements] = useListElements({ id: props.id, type: props.type })
-    console.log(listElements)
     const [isLoadingForm, setIsLoadingForm] = useState(false)
 
     const handleSubmit = (event = null) => {
@@ -100,7 +99,9 @@ export default function FormCustomers(props) {
         } else if (newElement.type == "delete") {
             setIsLoadingForm(true)
             if (newElement.id != -1) {
-                const response = await serviceDeleteElement(newElement.id)
+                const response = await serviceDeleteElement(
+                    { idElement: newElement.id, idCustomers: newElement.customer_id }
+                )
                 if (response.status != 200) {
                     setIsLoadingForm(false)
                     return
@@ -126,7 +127,6 @@ export default function FormCustomers(props) {
             }
         })
         const newCostumers = clearObject(dateCustomers)
-
         const response = await serviceCreateCustomers({ newLisElements, newCostumers })
         if (response.status == 201) {
             props.handleUpdate()

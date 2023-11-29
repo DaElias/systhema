@@ -29,13 +29,14 @@ const columns = [
 
 
 export default function ListElements({ typeCustomers, listElements, isLoading, handleElementsOptions, idCustomer = -1, handlePrintBillElement }) {
-    const { listCategories, updateCategory } = useCategory()
+    const { listCategories,hashListCategories, updateCategory } = useCategory()
     const [isOpenComponentAddCategory, setIsOpenComponentAddCategory] = useState(false)
     const [isOpenComponentElements, setIsOpenComponentElements] = useState({
         value: false,
         data: { typeCustomers, listElements, isLoading },
         type: typeCustomers
     })
+
     const titleModalComponent = useMemo(() => {
         const { type } = isOpenComponentElements
         if (type == "view")
@@ -56,7 +57,8 @@ export default function ListElements({ typeCustomers, listElements, isLoading, h
         const cellValue = element[columnKey]
         switch (columnKey) {
             case "Category":
-                return cellValue?.name
+                return hashListCategories[element?.category_id]?.name
+                // return cellValue?.name
             case "role":
                 return (
                     <div className="flex flex-col">
@@ -113,7 +115,7 @@ export default function ListElements({ typeCustomers, listElements, isLoading, h
             default:
                 return cellValue
         }
-    }, [])
+    }, [listCategories])
 
     return (
         <>
