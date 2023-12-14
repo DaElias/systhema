@@ -14,7 +14,6 @@ import useFetch from "@/hooks/useFetch";
 import LOGO from "/public/logo.png"
 import { serviceDeleteCustomer } from "@/service/apiService";
 import { KEY_DOCUMENT_STOREGE_API_CUSTOMERS } from "@/util/const";
-import useVisibleColumns from "@/hooks/useVisibleColums";
 
 const statusColorMap = {
   active: "success",
@@ -42,7 +41,20 @@ const statusOptions = [
   { name: "Paused", uid: "paused" },
   { name: "Vacation", uid: "vacation" },
 ];
-
+const INITIAL_VISIBLE_COLUMNS = [
+  // "fiscale_code",
+  "name",
+  "last_name",
+  "address",
+  "zip_code",
+  "city",
+  // "provice",
+  "contact_1",
+  // "contact_2",
+  "email_1",
+  // "email_2",
+  "actions"
+  ,]
 
 const INITIAL_ROWS_PER_PAGE = 10
 const INITIAL_STATE_IS_OPEN = { value: false, data: {}, type: "view" }
@@ -55,7 +67,7 @@ export default function ListCustomers() {
   // Table
   const [filterValue, setFilterValue] = useState("");
   const [selectedKeys, setSelectedKeys] = useState(new Set([]));
-  const [visibleColumns, setVisibleColumns] = useVisibleColumns()
+  const [visibleColumns, setVisibleColumns] = useState(new Set(INITIAL_VISIBLE_COLUMNS));
   const [statusFilter, setStatusFilter] = useState("all");
   const [rowsPerPage, setRowsPerPage] = useState(INITIAL_ROWS_PER_PAGE);
   const [sortDescriptor, setSortDescriptor] = useState({
