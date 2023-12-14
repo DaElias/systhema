@@ -10,23 +10,13 @@
     "tauri": "tauri"
   },
   "dependencies": {
-    "@emotion/react": "11.11.1",
-    "@emotion/styled": "11.11.0",
-    "@nextui-org/react": "2.1.13",
-    "@prisma/client": "^5.5.2",
-    "framer-motion": "10.16.4",
     "jspdf": "^2.5.1",
     "next": "13.5.6",
     "pspdfkit": "^2023.5.2",
     "react": "18",
-    "react-dom": "18",
-    "tauri-plugin-log-api": "github:tauri-apps/tauri-plugin-log",
-    "tauri-plugin-store-api": "github:tauri-apps/tauri-plugin-store#v1",
-    "uid": "^2.0.2",
-    "uuid": "^9.0.1"
+    "react-dom": "18"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1.5.6",
     "autoprefixer": "10",
     "eslint": "8",
     "eslint-config-next": "13.5.6",

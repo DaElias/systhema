@@ -5,6 +5,6 @@ attachConsole()
 
 export default function Home() {
   return (
-    <ListCustomers />
+    <></>
   )
 }
