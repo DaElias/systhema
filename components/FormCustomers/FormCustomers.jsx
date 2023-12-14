@@ -9,7 +9,6 @@ import { HAS_PROVINCE, clearObject } from '@/lib/utils';
 import useValidateFelds from '@/hooks/useValidateFelds';
 import { serviceCreateCustomers, serviceCreateElement, serviceDeleteElement, serviceEditCustomer, serviceEditElement } from '@/service/apiService';
 import { open } from '@tauri-apps/api/shell';
-import handlePrintTicket from '@/lib/PrintPDF/handlePrintTicket';
 
 
 export default function FormCustomers(props) {
@@ -184,14 +183,17 @@ export default function FormCustomers(props) {
 
     const handlePrintBillElement = (element) => {
 
-        // handlePrintTicket({
-        //     elementName: element.name,
-        //     customersName: `${dateCustomers.name} ${dateCustomers.last_name}`,
-        //     delivery_description: element.delivery_description,
-        //     createdAt: !element.createdAt ? new Date() : element.createdAt,
-        //     id: element.id + "",
-        //     value: element.value + ""
-        // })
+        const elementName = element.name
+        const customersName = `${dateCustomers.name} ${dateCustomers.last_name}`
+        const delivery_description = element.delivery_description
+        const createdAt = !element.createdAt ? new Date() : element.createdAt
+        const id = element.id + ""
+        const value = element.value + ""
+
+        // chage this
+        const link = "https://systema-5frvg7je5-sisthema-admins-projects.vercel.app/"
+
+        open(`${link}/?elementName="${elementName}"&customersName="${customersName}"&id="${id}"&value="${value}"&delivery_description="${delivery_description}"&createdAt="${createdAt}"`)
     }
 
 
