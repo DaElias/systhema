@@ -1,13 +1,12 @@
 {
-  "name": "systema",
+  "name": "systema-print",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "tauri": "tauri"
+    "lint": "next lint"
   },
   "dependencies": {
     "jspdf": "^2.5.1",
